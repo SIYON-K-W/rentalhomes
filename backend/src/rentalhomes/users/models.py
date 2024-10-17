@@ -14,6 +14,9 @@ class CustomUser(AbstractUser):
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     location = models.ForeignKey('users.Location', null=True, blank=True, on_delete=models.SET_NULL)
 
+    class Meta:
+        ordering=["-id"]
+
     def __str__(self):
         return self.username
     
@@ -25,6 +28,6 @@ class Location(models.Model):
         db_table = "users_location"
 
     def __str__(self):
-        return self.name
+        return f"{self.id}-{self.name}"
 
 
