@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 USER_TYPE_CHOICES = (
@@ -10,7 +11,7 @@ USER_TYPE_CHOICES = (
 
 class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15, blank=True)
+    phone_number = PhoneNumberField(region='IN', blank=True)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     location = models.ForeignKey('users.Location', null=True, blank=True, on_delete=models.SET_NULL)
 

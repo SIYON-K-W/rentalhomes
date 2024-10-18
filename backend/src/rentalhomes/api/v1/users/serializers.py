@@ -5,7 +5,7 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
 
-from users.models import Location,CustomUser
+from users.models import Location
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,30 +46,52 @@ class SignupSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=True, max_length=30)
     last_name = serializers.CharField(required=True, max_length=30)
     password = serializers.CharField(
-        write_only=True, required=True, validators=[validate_password]
+        write_only=True, required=True, validators=[validate_password],
+        error_messages={"required": "Password is required."}
     )
-    password2 = serializers.CharField(write_only=True, required=True)
+    password2 = serializers.CharField(
+        write_only=True, required=True, error_messages={"required": "Please confirm your password."}
+    )
 
     phone_number = serializers.CharField(
-        required=True, max_length=15, validators=[UniqueValidator(queryset=CustomUser.objects.all(), message="Phone number already exists.")]
+        required=True, max_length=15,
+        validators=[UniqueValidator(queryset=User.objects.all(), message="Phone number already exists.")]
     )
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email','phone_number', 'password', 'password2', 'user_type', 'location')
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'password', 'password2', 'user_type', 'location')
 
     def validate(self, attrs):
+        # Check if passwords match
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({"password": "Passwords don't match."})
         
+        # Ensure phone number is all digits and within a valid length range
         phone_number = attrs.get('phone_number')
         if not phone_number.isdigit():
             raise serializers.ValidationError({"phone_number": "Phone number must contain only digits."})
+        if len(phone_number) < 7 or len(phone_number) > 15:
+            raise serializers.ValidationError({"phone_number": "Phone number must be between 7 and 15 digits long."})
+
+        # Ensure valid user_type
+        user_type = attrs.get('user_type')
+        if user_type not in ['owner', 'customer']:
+            raise serializers.ValidationError({"user_type": "Invalid user type."})
+
+        # Ensure location is provided for owners only
+        if user_type == 'owner' and not attrs.get('location'):
+            raise serializers.ValidationError({"location": "Location is required for owners."})
+        if user_type == 'customer' and attrs.get('location'):
+            raise serializers.ValidationError({"location": "Customers should not have a location."})
 
         return attrs
 
     def create(self, validated_data):
-        validated_data.pop('password2') 
+        # Remove password2 from validated data
+        validated_data.pop('password2')
+
+        # Create the user instance
         user = User.objects.create(
             username=validated_data['username'],
             first_name=validated_data['first_name'],
@@ -77,8 +99,11 @@ class SignupSerializer(serializers.ModelSerializer):
             phone_number=validated_data['phone_number'],
             email=validated_data['email'],
             user_type=validated_data['user_type'],
-            location=validated_data.get('location') 
+            location=validated_data.get('location') if validated_data['user_type'] == 'owner' else None
         )
+        
+        # Set and hash the password
         user.set_password(validated_data['password'])
         user.save()
+
         return user

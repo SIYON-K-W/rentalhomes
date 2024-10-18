@@ -4,7 +4,8 @@ from api.v1.houses import views
 
 urlpatterns = [
     path("create/",views.create_house_listing),
-    path("list/",views.house_listing_list),
+    path("listing/",views.houses),
+    path("listing/house/<int:pk>/",views.house),
 ]
 
 

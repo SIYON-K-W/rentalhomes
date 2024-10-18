@@ -16,10 +16,10 @@ def list_locations(request):
     if not instances:
         return Response({"data":{"status_id":404, "message": "No locations found."}}, status=status.HTTP_404_NOT_FOUND)
     serializer = LocationSerializer(instances, many=True)
-    response_data = {"data":{
+    response_data = {
         "status_id": 200,
         "data": serializer.data
-    }}
+    }
     return Response(response_data, status=status.HTTP_200_OK)
 
 
@@ -96,7 +96,8 @@ def signup(request):
         response_data = {
             'status_id': 400,
             'error': True,
-            'message': "Validation error",
+            # 'message': "Validation error",
+            'message':  error_data,
             'data': error_data
         }
         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
