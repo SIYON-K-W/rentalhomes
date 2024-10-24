@@ -7,7 +7,7 @@ const Welcome = () => {
 			<section
 				className="h-screen backgroundImage"
 				style={{
-					backgroundImage: `url("/spotlight.jpg")`,
+					backgroundImage: `url("/assets/spotlight/spotlight.jpg")`,
 				}}>
 				<section className="wrapper h-full">
 					<section className="flex justify-center h-full">
