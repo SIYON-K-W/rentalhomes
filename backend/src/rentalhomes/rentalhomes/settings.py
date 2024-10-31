@@ -5,13 +5,12 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-d_x(b5r-fvv^mw(7)0*ad6h^-qc2tkowrva@hc8o2!*+my83pb'
+SECRET_KEY = 'django-insecure-c)1)t_-m148$lo1d%j0fwh6=7f+up*hazkr=*@e=xh)n6(2c^@'
 
 
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 
 
@@ -28,6 +27,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'phonenumber_field',
     'corsheaders',
+
+    'auth_user',
+    'web',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +60,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'rentalhomes.wsgi.application'
 
@@ -98,6 +99,7 @@ USE_I18N = True
 USE_TZ = True
 
 
+
 STATIC_URL = 'static/'
 
 
@@ -107,7 +109,7 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'auth_user.CustomUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -117,9 +119,14 @@ REST_FRAMEWORK = {
     ]
 }
 
+
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  
     'REFRESH_TOKEN_LIFETIME': timedelta(days=2),     
 }
 
+
 CORS_ALLOW_ALL_ORIGINS = True
+
+
