@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/Authcontext";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const SignupPage = ({ locations }) => {
@@ -15,8 +15,8 @@ const SignupPage = ({ locations }) => {
 		email: "",
 		phoneNumber: "",
 		password: "",
-		confirmPassword: "", // Added confirm password field
-		location: "", // Location field for owners
+		confirmPassword: "",
+		location: "",
 	});
 
 	const [profileImage, setProfileImage] = useState(null);
@@ -37,12 +37,11 @@ const SignupPage = ({ locations }) => {
 		const params = new URLSearchParams(window.location.search);
 
 		if (newName) {
-			params.set("type", newName); // Update query parameter
+			params.set("type", newName);
 		} else {
-			params.delete("type"); // Remove query parameter if newName is null
+			params.delete("type");
 		}
 
-		// Update the URL without reloading the page
 		const newUrl = `${window.location.pathname}?${params.toString()}`;
 		window.history.replaceState(null, "", newUrl);
 	};
@@ -71,13 +70,11 @@ const SignupPage = ({ locations }) => {
 		e.preventDefault();
 		setMessage("");
 
-		// Validate password confirmation
 		if (formData.password !== formData.confirmPassword) {
 			setMessage("Passwords do not match.");
 			return;
 		}
 
-		// Prepare FormData for submission
 		const formDataToSubmit = new FormData();
 		formDataToSubmit.append("first_name", formData.firstName);
 		formDataToSubmit.append("last_name", formData.lastName);
@@ -88,14 +85,12 @@ const SignupPage = ({ locations }) => {
 		formDataToSubmit.append("password2", formData.confirmPassword);
 		formDataToSubmit.append("user_type", isOwner ? "owner" : "customer");
 
-		// Append location if the user is an owner
 		if (isOwner) {
 			formDataToSubmit.append("location", formData.location);
 		}
 
-		// Append profile image if it exists
 		if (profileImage) {
-			formDataToSubmit.append("profile_image", profileImage); // Append the file object
+			formDataToSubmit.append("profile_image", profileImage);
 		}
 
 		try {
@@ -103,7 +98,7 @@ const SignupPage = ({ locations }) => {
 				"http://localhost:8000/api/v1/auth/register/",
 				{
 					method: "POST",
-					body: formDataToSubmit, // Send FormData
+					body: formDataToSubmit,
 				}
 			);
 
@@ -142,7 +137,7 @@ const SignupPage = ({ locations }) => {
 				<div className="flex justify-center mb-4">
 					<button
 						type="button"
-						className={`w-1/2 py-2 text-lg font-semibold rounded-l-lg ${
+						className={`w-1/2 max-md:w-[48%] py-2 text-lg max-md:text-base font-semibold rounded-l-lg ${
 							!isOwner
 								? "bg-blue-500 text-white"
 								: "bg-gray-200 text-gray-500"
@@ -154,7 +149,7 @@ const SignupPage = ({ locations }) => {
 					</button>
 					<button
 						type="button"
-						className={`w-1/2 py-2 text-lg font-semibold rounded-r-lg ${
+						className={`w-1/2 max-md:w-[48%] py-2 text-lg max-md:text-base font-semibold rounded-r-lg ${
 							isOwner
 								? "bg-blue-500 text-white"
 								: "bg-gray-200 text-gray-500"
@@ -165,8 +160,8 @@ const SignupPage = ({ locations }) => {
 						Owner
 					</button>
 				</div>
-				<div className="flex items-center mb-6">
-					<div className="relative mr-3">
+				<div className="flex items-center md:mb-6 max-md:flex-col max-md:gap-4">
+					<div className="relative md:mr-3">
 						<label
 							htmlFor="image-upload"
 							className="cursor-pointer relative">
@@ -194,12 +189,12 @@ const SignupPage = ({ locations }) => {
 						</label>
 					</div>
 
-					<div className="flex flex-col flex-1">
+					<div className="flex flex-col flex-1 max-md:gap-4 max-md:w-full">
 						<input
 							type="text"
 							name="firstName"
 							placeholder="First Name"
-							className="w-full p-2 mb-2 border border-gray-300 rounded"
+							className="w-full p-2 md:mb-2 border border-gray-300 rounded"
 							value={formData.firstName}
 							onChange={handleInputChange}
 							required

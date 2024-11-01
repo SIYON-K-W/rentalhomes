@@ -1,7 +1,7 @@
 import Dashboard from "./_components/Dashboard";
 
 const page = async () => {
-	return <div>djijij</div>;
+	return <Dashboard />;
 };
 
 export default page;

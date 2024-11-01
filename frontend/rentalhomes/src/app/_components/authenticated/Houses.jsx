@@ -5,7 +5,7 @@ const Houses = async () => {
 	return (
 		<section className="py-12">
 			<section className="wrapper">
-				<section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+				<section className="grid grid-cols-1 2xl:grid-cols-2 5xl:grid-cols-3 gap-6">
 					<div className="border rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer">
 						<Link href={`house/${1}`}>
 							<div>

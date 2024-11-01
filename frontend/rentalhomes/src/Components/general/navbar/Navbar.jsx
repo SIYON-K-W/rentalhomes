@@ -20,7 +20,7 @@ const Navbar = async () => {
 						</h1>
 					</div>
 					<div className="flex items-center gap-[22px]">
-						<Rightpart />
+						{/* <Rightpart /> */}
 					</div>
 				</section>
 			</section>
