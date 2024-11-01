@@ -2,7 +2,12 @@ import { useState, useEffect, useRef } from "react";
 
 const Propertype = ({ formData, handleChange, setFormData }) => {
 	const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-	const propertyTypeSuggestions = ["Villa", "Apartment", "House", "Condo"];
+	const propertyTypeSuggestions = [
+		"Villa",
+		"Apartment",
+		"House",
+		"Tree House",
+	];
 	const suggestionsRef = useRef(null); // Create a ref for the suggestions container
 
 	// Handle input change and filter suggestions

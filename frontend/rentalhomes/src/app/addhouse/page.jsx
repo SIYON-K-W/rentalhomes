@@ -3,7 +3,7 @@ import AddForm from "./_components/AddForm";
 import NotOwner from "./_components/NotOwner";
 
 const getData = async () => {
-	const res = await fetch("http://localhost:8000/api/v1/auth/locations/", {
+	const res = await fetch("http://localhost:8000/api/v1/web/locations/", {
 		next: { revalidate: 3600 },
 	});
 
@@ -22,7 +22,7 @@ const page = async () => {
 		<section className="py-6">
 			<section className="wrapper">
 				<div className="flex items-center justify-center">
-					<div className="w-2/3">
+					<div className="4xl:w-2/3 max-3xl:w-full">
 						<h1 className="text-2xl font-semibold mb-6 text-gray-800 text-center">
 							Create a New House Listing
 						</h1>

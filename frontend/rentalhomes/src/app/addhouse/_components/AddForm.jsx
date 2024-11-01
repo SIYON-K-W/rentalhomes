@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import Propertype from "./Propertype";
+import { useRouter } from "next/navigation";
 
 const AddForm = ({ locations }) => {
 	const [featuredImage, setFeaturedImage] = useState(null);
@@ -33,31 +34,31 @@ const AddForm = ({ locations }) => {
 	const [fieldErrors, setFieldErrors] = useState({});
 	const [nonFieldErrors, setNonFieldErrors] = useState([]);
 
+	const router = useRouter();
+
 	const handleChange = (e) => {
 		const { name, value, type, files, checked } = e.target;
 
 		if (type === "file" && name === "featured_image") {
 			if (files.length > 0) {
-				// If a file is selected, update the form data and featured image preview
 				setFormData((prevData) => ({
 					...prevData,
-					[name]: files[0], // Single file for featured image
+					[name]: files[0],
 				}));
-				setFeaturedImage(URL.createObjectURL(files[0])); // Update the preview
+				setFeaturedImage(URL.createObjectURL(files[0]));
 			} else {
-				// If no file is selected, clear the featured image and its preview
 				setFormData((prevData) => ({
 					...prevData,
-					[name]: null, // Clear the featured image in form data
+					[name]: null,
 				}));
-				setFeaturedImage(null); // Clear the preview
+				setFeaturedImage(null);
 			}
 		} else if (type === "file" && name.startsWith("gallery_image_")) {
-			const index = name.split("_")[2]; // Get index from name
+			const index = name.split("_")[2];
 			const newImageInputs = [...imageInputs];
 			if (files.length > 0) {
 				newImageInputs[index].file = files[0];
-				newImageInputs[index].preview = URL.createObjectURL(files[0]); // Update the specific input
+				newImageInputs[index].preview = URL.createObjectURL(files[0]);
 			} else {
 				newImageInputs[index].file = null;
 				newImageInputs[index].preview = null;
@@ -107,7 +108,6 @@ const AddForm = ({ locations }) => {
 			data.append("parking_available", formData.parking_available);
 			data.append("pet_friendly", formData.pet_friendly);
 
-			// Append gallery images
 			imageInputs.forEach((input) => {
 				if (input.file) {
 					data.append("gallery_images", input.file);
@@ -116,12 +116,12 @@ const AddForm = ({ locations }) => {
 
 			try {
 				const res = await fetch(
-					"http://localhost:8000/api/v1/houses/create/",
+					"http://localhost:8000/api/v1/houses/house/create/",
 					{
 						method: "POST",
 						body: data,
 						headers: {
-							Authorization: `Bearer ${token.access}`, // Include JWT token if needed
+							Authorization: `Bearer ${token.access}`,
 						},
 					}
 				);
@@ -135,36 +135,32 @@ const AddForm = ({ locations }) => {
 
 						if (errorMessages) {
 							for (const field in errorMessages) {
-								// Check if the field is 'gallery_images' to handle it differently
 								if (field === "gallery_images") {
 									const galleryErrors = errorMessages[field];
 									for (const index in galleryErrors) {
-										// Map the error to the corresponding gallery input
 										fieldErrors[`gallery_image_${index}`] =
 											galleryErrors[index].join(" ");
 									}
 								} else {
-									// Handle other fields normally
 									fieldErrors[field] =
 										errorMessages[field].join(" ");
 								}
 							}
 						}
 
-						// Check for non-field errors
 						if (errordata.data.non_field_errors) {
 							nonFieldErrors = errordata.data.non_field_errors;
 						}
 					}
 
-					// Set the errors in state
 					setFieldErrors(fieldErrors);
 					setNonFieldErrors(nonFieldErrors);
 
-					return; // Exit after setting the errors
+					return;
 				}
 
 				const result = await res.json();
+				router.push("/dashboard");
 				console.log("House created successfully!", result);
 			} catch (error) {
 				console.error("Error creating house:", error.data);
@@ -179,15 +175,18 @@ const AddForm = ({ locations }) => {
 			className="space-y-4"
 			encType="multipart/form-data">
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="title">
 					Title
 				</label>
 				<input
 					type="text"
 					name="title"
+					id="title"
 					value={formData.title}
 					onChange={handleChange}
-					placeholder="a catching title must be 10 characters long"
+					placeholder="catching title,min:10 characters"
 					required
 					className="mt-1 p-2 w-full border border-gray-300 rounded-md"
 				/>
@@ -198,18 +197,19 @@ const AddForm = ({ locations }) => {
 				)}
 			</div>
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="sub_title">
 					Subtitle
 				</label>
 				<input
 					type="text"
 					name="sub_title"
+					id="sub_title"
 					value={formData.sub_title}
 					onChange={handleChange}
 					required
-					placeholder={`Your subtitle will appear as "${
-						formData.sub_title || "your subtitle"
-					} in 'your location', India"`}
+					placeholder={"catching subtitle"}
 					className="mt-1 p-2 w-full border border-gray-300 rounded-md"
 				/>
 				{fieldErrors.sub_title && (
@@ -220,17 +220,20 @@ const AddForm = ({ locations }) => {
 			</div>
 
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="special_about_place">
 					What's special about this place?
 				</label>
 				<input
 					type="text"
 					name="special_about_place"
+					id="special_about_place"
 					value={formData.special_about_place}
 					onChange={handleChange}
 					required
 					className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-					placeholder="In maximum 30 words and minimum 10 words"
+					placeholder="In max:30 words and min: 10 words"
 				/>
 				{fieldErrors.special_about_place && (
 					<div className="error-message" style={{ color: "red" }}>
@@ -239,15 +242,19 @@ const AddForm = ({ locations }) => {
 				)}
 			</div>
 			<div>
-				<label className="block text-sm font-medium text-gray-700 capitalize">
+				<label
+					className="block text-sm font-medium text-gray-700 capitalize"
+					htmlFor="extra_features">
 					brief description about place
 				</label>
 				<textarea
 					name="extra_features"
+					id="extra_features"
 					value={formData.extra_features}
 					onChange={handleChange}
 					className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-					placeholder="e.g. beatigul Pool with vast Garden, etc."
+					placeholder="e.g. beautifull Pool with vast Garden, etc."
+					rows={8}
 				/>
 				{fieldErrors.extra_features && (
 					<div className="error-message" style={{ color: "red" }}>
@@ -256,13 +263,16 @@ const AddForm = ({ locations }) => {
 				)}
 			</div>
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="featured_image">
 					Featured Image
 				</label>
 
 				<input
 					type="file"
 					name="featured_image"
+					id="featured_image"
 					accept="image/*"
 					onChange={handleChange}
 					className="mt-1 cursor-pointer"
@@ -284,11 +294,14 @@ const AddForm = ({ locations }) => {
 				)}
 			</div>
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="location_city">
 					Location (City)
 				</label>
 				<select
 					name="location_city"
+					id="location_city"
 					value={formData.location_city}
 					onChange={handleChange}
 					required
@@ -307,11 +320,14 @@ const AddForm = ({ locations }) => {
 				)}
 			</div>
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="exact_location">
 					Exact Location
 				</label>
 				<input
 					type="text"
+					id="exact_location"
 					name="exact_location"
 					value={formData.exact_location}
 					placeholder="eg:mathilakam,irinjalakuda,680685"
@@ -326,18 +342,24 @@ const AddForm = ({ locations }) => {
 				)}
 			</div>
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="phone_number">
 					Phone Number
 				</label>
-				<input
-					type="text"
-					name="phone_number"
-					value={formData.phone_number}
-					onChange={handleChange}
-					placeholder="valid number"
-					required
-					className="mt-1 p-2 w-full border border-gray-300 rounded-md"
-				/>
+				<div className="flex items-center mt-1 w-full border border-gray-300 rounded-md">
+					<div className="w-10 h-full text-center">+91</div>
+					<input
+						type="text"
+						name="phone_number"
+						id="phone_number"
+						value={formData.phone_number}
+						onChange={handleChange}
+						placeholder="enter valid number for contact"
+						required
+						className="p-2 flex-1 border-l"
+					/>
+				</div>
 				{fieldErrors.phone_number && (
 					<div className="error-message" style={{ color: "red" }}>
 						<p>{fieldErrors.phone_number}</p>
@@ -346,14 +368,18 @@ const AddForm = ({ locations }) => {
 			</div>
 
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="contact_email">
 					Contact Email
 				</label>
 				<input
 					type="email"
 					name="contact_email"
+					id="contact_email"
 					value={formData.contact_email}
 					onChange={handleChange}
+					placeholder="enter valid email for contact"
 					required
 					className="mt-1 p-2 w-full border border-gray-300 rounded-md"
 				/>
@@ -365,12 +391,16 @@ const AddForm = ({ locations }) => {
 			</div>
 
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="rent_amount">
 					Rent Amount
 				</label>
 				<input
 					type="number"
 					name="rent_amount"
+					id="rent_amount"
+					placeholder="in INR"
 					value={formData.rent_amount}
 					onChange={handleChange}
 					required
@@ -387,13 +417,16 @@ const AddForm = ({ locations }) => {
 				handleChange={handleChange}
 				setFormData={setFormData}
 			/>
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+			<div className="grid max-lg:grid-cols-1 grid-cols-3 gap-4">
 				<div>
-					<label className="block text-sm font-medium text-gray-700">
+					<label
+						className="block text-sm font-medium text-gray-700"
+						htmlFor="number_of_bedrooms">
 						Number of Bedrooms
 					</label>
 					<input
 						type="number"
+						id="number_of_bedrooms"
 						name="number_of_bedrooms"
 						value={formData.number_of_bedrooms}
 						onChange={handleChange}
@@ -408,12 +441,15 @@ const AddForm = ({ locations }) => {
 				</div>
 
 				<div>
-					<label className="block text-sm font-medium text-gray-700">
+					<label
+						className="block text-sm font-medium text-gray-700"
+						htmlFor="number_of_bathrooms">
 						Number of Bathrooms
 					</label>
 					<input
 						type="number"
 						name="number_of_bathrooms"
+						id="number_of_bathrooms"
 						value={formData.number_of_bathrooms}
 						onChange={handleChange}
 						required
@@ -426,11 +462,14 @@ const AddForm = ({ locations }) => {
 					)}
 				</div>
 				<div>
-					<label className="block text-sm font-medium text-gray-700">
+					<label
+						className="block text-sm font-medium text-gray-700"
+						htmlFor="number_of_guests">
 						Number of Guests
 					</label>
 					<input
 						type="number"
+						id="number_of_guests"
 						name="number_of_guests"
 						value={formData.number_of_guests}
 						onChange={handleChange}
@@ -445,11 +484,14 @@ const AddForm = ({ locations }) => {
 				</div>
 			</div>
 			<div>
-				<label className="block text-sm font-medium text-gray-700">
+				<label
+					className="block text-sm font-medium text-gray-700"
+					htmlFor="lease_duration">
 					Lease Duration
 				</label>
 				<input
 					type="text"
+					id="lease_duration"
 					name="lease_duration"
 					value={formData.lease_duration}
 					onChange={handleChange}
@@ -498,7 +540,7 @@ const AddForm = ({ locations }) => {
 				</label>
 				{imageInputs.map((input, index) => (
 					<div key={input.id} className="flex mb-4 flex-col gap-4">
-						<div>
+						<div className="flex max-md:flex-col max-md:gap-2 items-start">
 							<input
 								type="file"
 								name={`gallery_image_${index}`}
@@ -509,7 +551,7 @@ const AddForm = ({ locations }) => {
 							<button
 								type="button"
 								onClick={() => removeImageInput(index)}
-								className="ml-2 text-red-500">
+								className="md:ml-2 text-red-500">
 								Remove
 							</button>
 						</div>
@@ -549,7 +591,7 @@ const AddForm = ({ locations }) => {
 				<button
 					type="submit"
 					className="w-full bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-500">
-					Create House Listing
+					Create House
 				</button>
 			</div>
 		</form>
