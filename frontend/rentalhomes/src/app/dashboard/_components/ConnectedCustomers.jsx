@@ -3,11 +3,11 @@ import Link from "next/link";
 
 const ConnectedCustomers = async () => {
 	return (
-		<div className="absolute bg-white h-4/5 top-0 left-36 w-3/4 p-8 flex flex-col gap-3 border-black border rounded-lg">
+		<div className="absolute bg-white h-[50vh] top-0 left-36 w-1/3 p-8 flex flex-col gap-3 border-black border rounded-lg overflow-hidden">
 			<h4 className="font-bold text-xl text-center">
 				Connected Customers
 			</h4>
-			<ul className="grid grid-cols-2 h-full w-full overflow-x-auto gap-3">
+			<ul className="grid grid-cols-1 h-full w-full gap-3 overflow-auto">
 				<li className="border rounded-lg p-4">
 					<div className="flex flex-col gap-4">
 						<div className="flex items-center gap-4">

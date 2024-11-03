@@ -3,9 +3,10 @@ import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import ImageGallery from "./_components/ImageGallery";
+import Connect from "./_components/Connect";
 // import { useEffect, useState } from "react";
 
-const getData = async () => {
+const getData = async (id) => {
 	const cookieStore = await cookies();
 	const tokenData = cookieStore.get("token");
 
@@ -14,14 +15,14 @@ const getData = async () => {
 		console.log(token);
 
 		const res = await fetch(
-			`http://127.0.0.1:8000/api/v1/houses/house/${1}/`,
+			`http://127.0.0.1:8000/api/v1/houses/house/${id}/`,
 			{
 				method: "GET",
 				headers: {
 					Authorization: `Bearer ${token.access}`,
 					"Content-Type": "application/json",
 				},
-				next: { revalidate: 3600 },
+				next: { revalidate: 1000 },
 			}
 		);
 
@@ -35,11 +36,13 @@ const getData = async () => {
 	}
 };
 
-const house = async () => {
+const house = async ({ params }) => {
+	console.log(params);
+
 	// const [houseData, setHouseData] = useState(null);
-	const houseData = await getData();
-	const galleryimages = houseData.data;
-	console.log(galleryimages);
+	const data = await getData(params.slug);
+	const house = data.data;
+	console.log(data);
 
 	// useEffect(() => {
 	// 	const fetchData = async () => {
@@ -57,23 +60,22 @@ const house = async () => {
 		<section className="py-12">
 			<section className="wrapper">
 				<section className="flex flex-col gap-4">
-					<h3 className="text-3xl font-bold">
-						Riverdale Villa Kumarakom Room 2
-					</h3>
+					<h3 className="text-3xl font-bold">{house.title}</h3>
 					<div>
 						<ImageGallery
-							featuredImage={houseData.data.featured_image}
-							galleryImages={houseData.data.gallery_images}
+							featuredImage={house.featured_image}
+							galleryImages={house.gallery_images}
 						/>
 					</div>
 					<div className="flex items-center justify-between">
 						<div className="w-7/12 flex flex-col gap-5">
 							<div>
-								<h5 className="text-2xl font-semibold">
-									Room in Arpookara, India
+								<h5 className="text-2xl font-semibold capitalize">
+									{house.sub_title} in {house.location_city}
+									,india
 								</h5>
 								<span className="text-[#494949] capitalize text-lg pl-1">
-									montain views
+									{house.special_about_place}
 								</span>
 								<div className="font-semibold text-lg flex items-center gap-1 pl-1">
 									<span>4.5</span>
@@ -85,7 +87,10 @@ const house = async () => {
 							<div className="flex items-center gap-4 pl-1">
 								<div className="relative h-11 w-11">
 									<Image
-										src={"/t.jpg"}
+										src={
+											house.owner_profile_image ||
+											"/assets/images/nonprofile.jpg"
+										}
 										alt="owner image"
 										fill={true}
 										objectFit="cover"
@@ -94,7 +99,8 @@ const house = async () => {
 								</div>
 								<div>
 									<h3 className="text-lg font-semibold">
-										Hosted by Binoy
+										Hosted by {house.owner_first_name}{" "}
+										{house.owner_last_name}
 									</h3>
 									<span>4 years hosting</span>
 								</div>
@@ -106,25 +112,18 @@ const house = async () => {
 								</h4>
 								<ul className="flex flex-col gap-1 list-disc pl-6">
 									<li>
-										<p>
-											Along the paddy fields and swaying
-											coconut palms, one of the streams of
-											river Meenachil makes her silent
-											journey to the back waters of
-											Kumarakam. And there awaits one best
-											kept secrets of the back water
-											experience.... Riverdale Villa. A
-											cosy home with two bed rooms, lot of
-											sun and shine to soak into, and
-											above all one gets initiated into
-											curative village experience of the
-											back waters.
-										</p>
+										<p>{house.extra_features}</p>
 									</li>
-									<li className="capitalize">pet friendly</li>
-									<li className="capitalize">
-										parking available
-									</li>
+									{house.pet_friendly && (
+										<li className="capitalize">
+											pet friendly
+										</li>
+									)}
+									{house.parking_available && (
+										<li className="capitalize">
+											parking available
+										</li>
+									)}
 								</ul>
 							</div>
 							<div className="bg-[#e5e7eb] h-[1px] w-full"></div>
@@ -132,38 +131,44 @@ const house = async () => {
 								<h4 className="font-semibold text-lg capitalize">
 									exact location
 								</h4>
-								<span>irinjalakuda</span>
+								<h6>
+									{house.exact_location},{house.location_city}
+								</h6>
 							</div>
 						</div>
 						<div className="w-1/3">
 							<div className="rounded-xl p-6 border border-[#dddddd] flex flex-col gap-6">
 								<h5 className="text-2xl font-semibold">
-									&#8377;4000
+									&#8377;{house.rent_amount}
 								</h5>
 								<ul className="border grid grid-cols-2 border-black rounded-lg">
 									<li className="border-r p-3">
 										<h6 className="capitalize font-semibold">
 											bedrooms
 										</h6>
-										<span>2 bedroom</span>
+										<span>
+											{house.number_of_bedrooms} bedroom
+										</span>
 									</li>
 									<li className="p-3">
 										<h6 className="capitalize font-semibold">
 											guests
 										</h6>
-										<span>2 guests</span>
+										<span>
+											{house.number_of_guests} guests
+										</span>
 									</li>{" "}
 									<li className="border-t p-3 border-r">
 										<h6 className="capitalize font-semibold">
 											rent duration
 										</h6>
-										<span>365 days</span>
+										<span>{house.lease_duration}</span>
 									</li>{" "}
 									<li className="p-3 border-t">
 										<h6 className="capitalize font-semibold">
 											property type
 										</h6>
-										<span>villa</span>
+										<span>{house.property_type}</span>
 									</li>
 								</ul>
 								<div className="p-6 flex flex-col gap-1 rounded-lg shadow-md border">
@@ -172,9 +177,9 @@ const house = async () => {
 											Phone Number:
 										</h5>
 										<Link
-											href={"/"}
+											href={`tel:${house.phone_number}`}
 											className="text-blue-600 hover:text-blue-800 transition-colors duration-200">
-											+911234567896
+											{house.phone_number}
 										</Link>
 									</div>
 									<div className="flex items-center">
@@ -182,16 +187,17 @@ const house = async () => {
 											Email ID:
 										</h5>
 										<Link
-											href={"/"}
+											href={`mailto:${house.contact_email}`}
 											className="text-blue-600 hover:text-blue-800 transition-colors duration-200">
-											owner@example.com
+											{house.contact_email}
 										</Link>
 									</div>
 								</div>
-
-								<button className="capitalize w-full py-[15px] bg-[#E41C58] text-white rounded-lg">
-									connect
-								</button>
+								<Connect
+									isconnected={house.is_connected}
+									isowner={house.is_owner}
+									id={house.id}
+								/>
 							</div>
 						</div>
 					</div>

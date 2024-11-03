@@ -158,7 +158,6 @@ const AddForm = ({ locations }) => {
 
 					return;
 				}
-
 				const result = await res.json();
 				router.push("/dashboard");
 				console.log("House created successfully!", result);

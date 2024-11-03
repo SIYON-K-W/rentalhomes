@@ -51,8 +51,6 @@ export function AuthProvider({ children }) {
 		const userType = Cookies.get("userType");
 		if (tokenString && userType) {
 			const token = JSON.parse(tokenString);
-			console.log("token", token);
-
 			setUser({ token, user_type: userType });
 		}
 	}, []);

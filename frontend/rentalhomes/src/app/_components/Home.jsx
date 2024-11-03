@@ -4,8 +4,8 @@ import Welcome from "./unauthenticated/Welcome";
 
 const Home = async () => {
 	const cookieStore = await cookies();
-	const data = cookieStore.get("token");
-	return data ? <Houses /> : <Welcome />;
+	const user = cookieStore.get("token");
+	return user ? <Houses /> : <Welcome />;
 };
 
 export default Home;

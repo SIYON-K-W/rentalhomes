@@ -4,7 +4,7 @@ import Owner from "./Owner";
 import Customer from "./Customer";
 
 const Dashboard = async () => {
-	const isowner = true;
+	const isowner = false;
 	return (
 		<section className="py-12">
 			<section className="wrapper">

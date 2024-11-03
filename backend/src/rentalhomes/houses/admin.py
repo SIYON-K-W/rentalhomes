@@ -9,7 +9,7 @@ class HouseImageInline(admin.TabularInline):
 
 @admin.register(HouseListing)
 class HouseListingAdmin(admin.ModelAdmin):
-    list_display = ('property_type', 'location_city', 'rent_amount', 'number_of_guests', 'created_at', 'owner')
+    list_display = ('id','property_type', 'location_city', 'rent_amount', 'number_of_guests', 'created_at', 'owner')
     search_fields = ('property_type', 'exact_location', 'contact_email')
     list_filter = ('location_city', 'rent_amount', 'number_of_guests')
     inlines = [HouseImageInline]  

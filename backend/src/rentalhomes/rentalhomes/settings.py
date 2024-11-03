@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'auth_user',
     'web',
     'houses',
+    'connect',
 ]
 
 MIDDLEWARE = [
