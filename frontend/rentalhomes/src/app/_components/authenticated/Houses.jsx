@@ -6,21 +6,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const Houses = () => {
+const Houses = ({ userlocation }) => {
 	const [houses, setHouses] = useState([]);
 	const [error, setError] = useState(null);
 
-	const { location } = useLocation();
+	const { location, updateLocation } = useLocation();
+	// useEffect(() => {
+	// 	if (userlocation) {
+	// 		updateLocation(userlocation);
+	// 	}
+	// }, []);
 
-	const tokenString = Cookies.get("token");
 	useEffect(() => {
 		setError(null);
+		const tokenString = Cookies.get("token");
 		const fetchData = async () => {
 			try {
 				if (tokenString) {
 					const token = JSON.parse(tokenString);
 
 					const locationId = location || 0;
+					console.log(locationId);
+
 					const res = await fetch(
 						`http://127.0.0.1:8000/api/v1/houses?location_id=${locationId}`,
 						{

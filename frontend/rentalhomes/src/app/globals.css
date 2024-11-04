@@ -16,3 +16,27 @@ body {
 	background-position: center;
 	background-repeat: no-repeat;
 }
+
+.background-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	z-index: 1;
+}
+
+.no-scroll {
+	overflow: hidden;
+}
+
+.scroll-container {
+	overflow: auto;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+	display: none;
+}

@@ -9,7 +9,7 @@ urlpatterns = [
     path("api/v1/web/",include("api.v1.web.urls")),
     path("api/v1/houses/",include("api.v1.houses.urls")),
     path("api/v1/house/",include("api.v1.connect.urls")),
-    # path("api/v1/profile/",include("api.v1.profile.urls")),
+    path("api/v1/profile/",include("api.v1.profile.urls")),
     # path("api/v1/messenger/",include("api.v1.messenger.urls")),
 ]
 

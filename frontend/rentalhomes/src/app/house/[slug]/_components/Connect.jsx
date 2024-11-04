@@ -1,9 +1,13 @@
 "use client";
 
 import Cookies from "js-cookie";
+import { useState } from "react";
 
 const Connect = ({ isconnected, isowner, id }) => {
+	const [connected, setConnected] = useState(false);
+	const [error, setError] = useState("");
 	const handleconnect = async (id) => {
+		setError("");
 		console.log(id);
 
 		const tokenstring = Cookies.get("token");
@@ -33,11 +37,14 @@ const Connect = ({ isconnected, isowner, id }) => {
 			);
 
 			if (!res.ok) {
-				console.error("Failed to connect. Status:", res.status);
+				const errordata = await res.json();
+				console.log(errordata);
+				setError(errordata.message);
 				return;
 			}
 
 			const data = await res.json();
+			setConnected(true);
 			console.log("Connected successfully:", data);
 		} catch (error) {
 			console.error("Error during fetch:", error);
@@ -45,9 +52,11 @@ const Connect = ({ isconnected, isowner, id }) => {
 	};
 
 	return (
-		<div>
-			{isconnected ? (
-				<></>
+		<div className="flex flex-col gap-2 items-center">
+			{isconnected || connected ? (
+				<button className="capitalize w-full py-[15px] bg-[#f59fb9] text-white rounded-lg">
+					connected
+				</button>
 			) : (
 				<button
 					className="capitalize w-full py-[15px] bg-[#E41C58] text-white rounded-lg"
@@ -55,6 +64,7 @@ const Connect = ({ isconnected, isowner, id }) => {
 					connect
 				</button>
 			)}
+			{error && <p className="text-red-500 text-center">{error}</p>}
 		</div>
 	);
 };

@@ -1,95 +1,23 @@
-import json
+import logging
+
+from django.db import DatabaseError
 
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny,IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
 from houses.models import HouseListing
-from users.permissions import IsOwner
-from api.v1.tasks.serializers import ConnectionSerializer
-from api.v1.houses.serializers import HouseListingDetailSerializer
-from api.v1.users.serializers import LocationSerializer
-from tasks.models import Connection
+from connect.models import Connection
+from auth_user.permissions import IsOwner
+from api.v1.profile.serializer import CustomerDashboardSerializer, ConnectedHouseSerializer,OwnerProfileSerializer,HouseSummarySerializer,UserLocationSerializer,ConnectedCustomerSerializer
 
-
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated,IsOwner])
-def owner_profile(request):
-    owner = request.user
-    
-    # Fetch owner's details
-    owner_data = {
-        "first_name": owner.first_name,
-        "last_name": owner.last_name,
-        "email": owner.email,
-        "location": LocationSerializer(owner.location).data if owner.location else None,
-    }
-
-    # Fetch houses owned by the owner
-    try:
-        owned_houses = HouseListing.objects.filter(owner=owner)
-    except Exception as e:
-        # If something goes wrong during fetching, return an actual error
-        return Response({
-            'status_id': 500,
-            'error': True,
-            'message': f"Error fetching houses: {str(e)}",
-            'data': {}
-        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    # Check if no houses are found, but this is not an "error" just valid empty data
-    if not owned_houses.exists():
-        return Response({
-            'status_id': 200,
-            'error': False,
-            'message': "No houses found for this owner.",
-            'data': {
-                "owner_details": owner_data,
-                "owned_houses": []
-            }
-        }, status=status.HTTP_200_OK)
-
-    house_list = []
-
-    # Loop through each house owned by the owner
-    for house in owned_houses:
-        # Get connected customers for each house
-        connected_customers = Connection.objects.filter(house=house).select_related('customer')
-
-        # If no connected customers, add an empty list for connected_customers
-        customer_list = [
-            {
-                "customer_id": connection.customer.id,
-                "customer_name": connection.customer.first_name
-            }
-            for connection in connected_customers
-        ] if connected_customers.exists() else []
-
-        # Serialize the house data and append the connected customers
-        house_data = HouseListingDetailSerializer(house).data
-        house_data['connected_customers'] = customer_list
-        house_list.append(house_data)
-
-    # Return success with valid data (including empty lists where applicable)
-    response_data = { 
-        'status_id': 200,
-        'error': False,
-        'message': "Owner profile retrieved successfully",
-        'data': {
-            "owner_details": owner_data,
-            "owned_houses": house_list
-        }
-    }
-
-    return Response(response_data, status=status.HTTP_200_OK)
-
+logger = logging.getLogger(__name__)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def customer_profile(request):
+def customer_dashboard(request):
     customer = request.user
 
     # Check if the user is a customer
@@ -101,46 +29,184 @@ def customer_profile(request):
             'data': {}
         }, status=status.HTTP_403_FORBIDDEN)
 
-    # Fetch customer's details
-    customer_data = {
-        "first_name": customer.first_name,
-        "last_name": customer.last_name,
-        "email": customer.email,
-        "phone_number": str(customer.phone_number),
-        "location": LocationSerializer(customer.location).data if customer.location else None,
-    }
+    try:
+        # Count total connected houses
+        connected_houses = Connection.objects.filter(customer=customer).select_related('house')
+        total_connected_houses = connected_houses.count()
 
-    # Fetch houses the customer is connected to
-    connected_houses = Connection.objects.filter(customer=customer).select_related('house')
+        # Prepare connected houses data
+        connected_houses_data = [
+            ConnectedHouseSerializer(connection.house, context={'request': request}).data 
+            for connection in connected_houses
+        ]
 
-    if not connected_houses.exists():
-        return Response({
+        # Serialize user details without including connected_houses
+        user_data = CustomerDashboardSerializer(customer, context={'request': request}).data
+
+        # Prepare response data including total_connected_houses
+        response_data = {
             'status_id': 200,
             'error': False,
-            'message': "No connected houses found for this customer.",
+            'message': "Customer dashboard data retrieved successfully",
             'data': {
-                "customer_details": customer_data,
-                "connected_houses": []
+                "user_details": user_data,
+                "total_connected_houses": total_connected_houses,
+                "connected_houses": connected_houses_data
             }
-        }, status=status.HTTP_200_OK)
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
 
-    house_list = []
+    except DatabaseError as db_error:
+        logger.error(f"Database error: {db_error}")
+        return Response({
+            'status_id': 500,
+            'error': True,
+            'message': "An error occurred while accessing the database. Please try again later.",
+            'data': {}
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        return Response({
+            'status_id': 500,
+            'error': True,
+            'message': "An unexpected error occurred. Please try again later.",
+            'data': {}
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsOwner])  # Ensure this custom permission checks if user is an owner
+def owner_dashboard(request):
+    try:
+        owner = request.user
+        owner_data = OwnerProfileSerializer(owner, context={'request': request}).data
+        owned_houses = HouseListing.objects.filter(owner=owner)
+        total_owned_houses = owned_houses.count()
+        total_connected_customers = Connection.objects.filter(house__in=owned_houses).count()
+
+        owned_houses_data = HouseSummarySerializer(owned_houses, many=True, context={'request': request}).data
+
+        # Structure the successful response
+        response_data = {
+            'status_id': 200,
+            'error': False,
+            'message': "Owner dashboard data retrieved successfully",
+            'data': {
+                "user_details": owner_data,
+                "total_owned_houses": total_owned_houses,
+                "total_connected_customers": total_connected_customers,
+                "owned_houses": owned_houses_data
+            }
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    except DatabaseError as db_error:
+        # Log database-related issues and return an error message
+        logger.error(f"Database error occurred: {db_error}")
+        return Response({
+            'status_id': 500,
+            'error': True,
+            'message': "Database error. Please try again later.",
+            'data': {}
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    except AttributeError as attr_error:
+        # Handle missing fields or attributes
+        logger.error(f"Attribute error: {attr_error}")
+        return Response({
+            'status_id': 500,
+            'error': True,
+            'message': "An error occurred with the requested data. Please check and try again.",
+            'data': {}
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    except Exception as e:
+        # Catch any other unexpected errors
+        logger.error(f"Unexpected error: {e}")
+        return Response({
+            'status_id': 500,
+            'error': True,
+            'message': "An unexpected error occurred. Please try again later.",
+            'data': {}
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_connected_customers(request, house_id):
+    try:
+        house = HouseListing.objects.get(id=house_id)
+
+        if house.owner != request.user:
+            return Response({
+                'status_id': 403,
+                'error': True,
+                'message': "Access denied. Only the owner of this house can view connected customers.",
+                'data': {}
+            }, status=status.HTTP_403_FORBIDDEN)
+
+        connections = Connection.objects.filter(house=house).select_related('customer')
+
+        serializer = ConnectedCustomerSerializer(connections, many=True,context={'request': request})
+
+        response_data = {
+            'status_id': 200,
+            'error': False,
+            'message': "Connected customers retrieved successfully",
+            'data': serializer.data
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    except HouseListing.DoesNotExist:
+        return Response({
+            'status_id': 404,
+            'error': True,
+            'message': "House not found.",
+            'data': {}
+        }, status=status.HTTP_404_NOT_FOUND)
+
+    except Exception as e:
+        logger.error(f"Unexpected error in get_connected_customers for house_id {house_id}: {e}")
+        return Response({
+            'status_id': 500,
+            'error': True,
+            'message': "An unexpected error occurred. Please try again later.",
+            'data': {}
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsOwner])  # Use IsOwner permission class
+def get_user_location(request):
+    user = request.user
+
+    # Check if the owner has a location assigned
+    if user.location is None:
+        return Response(
+            {
+                'status_id': 404,
+                'error': True,
+                'message': 'No location is assigned to your account.',
+                'data': {}
+            },
+            status=status.HTTP_404_NOT_FOUND  
+        )
+
+    # Serialize the user's location
+    serializer = UserLocationSerializer(user)
     
-    # Loop through each connected house
-    for connection in connected_houses:
-        house = connection.house
-        house_data = HouseListingDetailSerializer(house).data
-        house_list.append(house_data)
-
-    # If data is successfully fetched, return the response
-    response_data = { 
+    response_data = {
         'status_id': 200,
         'error': False,
-        'message': "Customer profile retrieved successfully",
+        'message': 'Location data retrieved successfully',
         'data': {
-            "customer_details": customer_data,
-            "connected_houses": house_list
+            'location': serializer.data['location']
         }
     }
 
-    return Response(response_data, status=status.HTTP_200_OK)
+    return Response(response_data, status=status.HTTP_200_OK)   

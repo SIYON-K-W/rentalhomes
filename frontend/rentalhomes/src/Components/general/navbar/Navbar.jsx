@@ -37,7 +37,7 @@ const Navbar = async () => {
 				</section>
 			</section>
 			<section className="relative">
-				{/* <ConnectedCustomers /> */}
+				<ConnectedCustomers />
 			</section>
 		</header>
 	);
