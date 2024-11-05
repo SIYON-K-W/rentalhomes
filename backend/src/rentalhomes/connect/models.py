@@ -6,6 +6,7 @@ class Connection(models.Model):
     customer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        limit_choices_to={'user_type': 'customer'},
         related_name='connections'  
     )
     house = models.ForeignKey(

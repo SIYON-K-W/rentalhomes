@@ -12,7 +12,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         token['username'] = user.username
         token['user_type'] = user.user_type
-        token['location'] = user.location.name if user.location else None
+        if user.location:
+            token['location_id'] = user.location.id  # Add location ID
+            token['location'] = user.location.name     # Add location name
+        else:
+            token['location_id'] = None
+            token['location'] = None
 
         return token
 

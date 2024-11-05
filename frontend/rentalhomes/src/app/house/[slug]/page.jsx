@@ -1,10 +1,8 @@
-// "use client";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import ImageGallery from "./_components/ImageGallery";
 import Connect from "./_components/Connect";
-// import { useEffect, useState } from "react";
 
 const getData = async (id) => {
 	const cookieStore = await cookies();
@@ -22,7 +20,7 @@ const getData = async (id) => {
 					Authorization: `Bearer ${token.access}`,
 					"Content-Type": "application/json",
 				},
-				next: { revalidate: 1000 },
+				cache: "no-store",
 			}
 		);
 
@@ -30,32 +28,14 @@ const getData = async (id) => {
 			throw new Error("Something went wrong while fetching house data");
 		}
 
-		// Parse the response JSON
 		const response = await res.json();
-		return response; // Return the parsed response
+		return response;
 	}
 };
 
 const house = async ({ params }) => {
-	console.log(params);
-
-	// const [houseData, setHouseData] = useState(null);
 	const data = await getData(params.slug);
 	const house = data.data;
-	console.log(data);
-
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const response = await fetch(
-	// 			`http://127.0.0.1:8000/api/v1/houses/house/${1}/`
-	// 		);
-	// 		const result = await response.json();
-	// 		setHouseData(result.data);
-	// 	};
-	// 	fetchData();
-	// }, []);
-	// console.log(houseData);
-
 	return (
 		<section className="py-12">
 			<section className="wrapper">
@@ -208,29 +188,3 @@ const house = async ({ params }) => {
 };
 
 export default house;
-{
-	/* <div className="bg-[#e5e7eb] h-[1px] w-full"></div>
-							<div className="pb-3 flex flex-col gap-2">
-								<h4 className="font-semibold text-lg capitalize">
-									Contact details
-								</h4>
-								<div className="pl-2">
-									<div>
-										<h5 className="font-semibold text-base capitalize">
-											phone number:
-										</h5>
-										<Link href={"/"} className="pl-2">
-											+911234567896
-										</Link>
-									</div>
-									<div>
-										<h5 className="font-semibold text-base capitalize">
-											email ID:
-										</h5>
-										<Link href={"/"} className="pl-2">
-											owner@example.com
-										</Link>
-									</div>
-								</div>
-							</div> */
-}

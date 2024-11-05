@@ -19,7 +19,7 @@ const getData = async (isowner) => {
 					Authorization: `Bearer ${token.access}`,
 					"Content-Type": "application/json",
 				},
-				next: { revalidate: 1000 },
+				cache: "no-store",
 			}
 		);
 
@@ -36,11 +36,8 @@ const page = async () => {
 	const usertype = cookieStore.get("userType");
 	if (usertype.value === "owner") {
 		const data = await getData(true);
-		console.log(data);
 		return <Dashboard isowner={true} data={data.data} />;
 	} else {
-		console.log("cutomer");
-		console.log(data);
 		const data = await getData(false);
 		return <Dashboard isowner={false} data={data.data} />;
 	}

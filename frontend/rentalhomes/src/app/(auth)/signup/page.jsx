@@ -19,7 +19,7 @@ const page = async () => {
 	return (
 		<div className="py-6 bg-gray-100">
 			<div className="wrapper">
-				<Signup locations={locations.data} />;
+				<Signup locations={locations.data} />
 			</div>
 		</div>
 	);

@@ -9,7 +9,7 @@ const Location = ({ locations }) => {
 			value={location}
 			onChange={(e) => updateLocation(e.target.value)}
 			className="bg-transparent text-black cursor-pointer focus:outline-none overflow-hidden capitalize">
-			<option value={0}>Cities</option>
+			<option value={0}>all Cities</option>
 			{locations?.map((location) => (
 				<option key={location.id} value={location.id}>
 					{location.name}

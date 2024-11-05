@@ -3,9 +3,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from houses.models import HouseListing
-from  connect.models import Connection
+from connect.models import Connection
 from api.v1.connect.serializers import ConnectionSerializer
-from api.v1.houses.serializers import HouseListingDetailSerializer
+
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -18,13 +18,19 @@ def connect_house(request, house_id):
             'error': True,
             'message': "House not found."
         }, status=status.HTTP_404_NOT_FOUND)
-
     if house.owner == request.user:
         return Response({
             'status_id': status.HTTP_400_BAD_REQUEST,
             'error': True,
             'message': "You cannot connect to your own house as an owner."
         }, status=status.HTTP_400_BAD_REQUEST)
+    if request.user.user_type != 'customer':
+        return Response({
+            'status_id': status.HTTP_403_FORBIDDEN,
+            'error': True,
+            'message': "Only customers can connect to houses."
+        }, status=status.HTTP_403_FORBIDDEN)
+
     if Connection.objects.filter(customer=request.user, house=house).exists():
         return Response({
             'status_id': status.HTTP_200_OK,
@@ -34,7 +40,7 @@ def connect_house(request, house_id):
 
     serializer = ConnectionSerializer(data={'house': house_id}, context={'request': request})
     if serializer.is_valid():
-        connection = serializer.save()
+        connection = serializer.save()  
         return Response({
             'status_id': status.HTTP_201_CREATED,
             'error': False,
@@ -47,4 +53,3 @@ def connect_house(request, house_id):
         'message': "Failed to connect to the house.",
         'data': serializer.errors
     }, status=status.HTTP_400_BAD_REQUEST)
-

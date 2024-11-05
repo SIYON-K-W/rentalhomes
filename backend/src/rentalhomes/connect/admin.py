@@ -14,8 +14,8 @@ class ConnectionForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Allow selection of all users regardless of their user type
-        self.fields['customer'].queryset = User.objects.all()
+        # Limit queryset to only customers
+        self.fields['customer'].queryset = User.objects.filter(user_type='customer')
 
     def clean(self):
         cleaned_data = super().clean()

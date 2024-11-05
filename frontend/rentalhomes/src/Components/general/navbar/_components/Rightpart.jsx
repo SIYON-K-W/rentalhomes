@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Links from "./Links";
 import Location from "./Location";
+import Logout from "../../../../../public/Components/general/navbar/_components/Logout";
+import Bottomenu from "./BottoMenu";
 
 const Rightpart = ({ locations }) => {
 	const [loaded, SetLoaded] = useState(false);
@@ -18,12 +20,16 @@ const Rightpart = ({ locations }) => {
 	return (
 		<>
 			{user && user.token ? (
-				<div className="flex items-center gap-7">
-					{/* <Links /> */}
+				<div className="flex items-center gap-10">
+					<div className="flex items-center gap-10 max-3xl:hidden">
+						<Links />
+					</div>
+
+					<Bottomenu />
 					{user && user.user_type === "owner" ? (
 						<Location locations={locations.data} />
 					) : (
-						<></>
+						<Logout />
 					)}
 				</div>
 			) : (
@@ -46,7 +52,7 @@ const Rightpart = ({ locations }) => {
 							Register as Customer
 						</Link>
 					</div>
-					<div>
+					<div className="3xl:hidden">
 						<Link
 							href={{
 								pathname: "/signup",

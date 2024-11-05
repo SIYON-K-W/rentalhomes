@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import { useAuth } from "@/context/Authcontext";
+import { useLocation } from "@/context/Locationcontext";
 
 const Login = () => {
 	const [username, SetUsername] = useState("");
 	const [password, SetPassword] = useState("");
 	const [message, SetMessage] = useState("");
+
+	const { location, updateLocation } = useLocation();
 
 	const { handleLogin } = useAuth();
 
@@ -45,7 +48,7 @@ const Login = () => {
 					token: res.data,
 					user_type: res.user_type,
 				};
-
+				updateLocation(res.location_id);
 				handleLogin({ type: "Login", payload: data });
 			}
 		} catch (error) {

@@ -6,16 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const Houses = ({ userlocation }) => {
+const Houses = () => {
 	const [houses, setHouses] = useState([]);
 	const [error, setError] = useState(null);
 
 	const { location, updateLocation } = useLocation();
-	// useEffect(() => {
-	// 	if (userlocation) {
-	// 		updateLocation(userlocation);
-	// 	}
-	// }, []);
 
 	useEffect(() => {
 		setError(null);
@@ -25,7 +20,7 @@ const Houses = ({ userlocation }) => {
 				if (tokenString) {
 					const token = JSON.parse(tokenString);
 
-					const locationId = location || 0;
+					const locationId = location;
 					console.log(locationId);
 
 					const res = await fetch(
@@ -64,12 +59,10 @@ const Houses = ({ userlocation }) => {
 					</div>
 				) : houses.length === 0 ? (
 					<div className="flex items-center justify-center min-h-[80vh]">
-						<p className="text-gray-500">
-							No houses available for this location.
-						</p>
+						<p className="text-gray-500">No houses found.</p>
 					</div>
 				) : (
-					<section className="grid grid-cols-1 2xl:grid-cols-2 5xl:grid-cols-3 gap-6 min-h-[80vh]">
+					<section className="max-2xl:grid-cols-1 grid max-4xl:grid-cols-2 grid-cols-3 gap-6 min-h-[80vh]">
 						{houses.map((house) => (
 							<div
 								className="border rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer h-fit"

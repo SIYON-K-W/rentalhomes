@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'web',
     'houses',
     'connect',
+    'messenger',
 ]
 
 MIDDLEWARE = [

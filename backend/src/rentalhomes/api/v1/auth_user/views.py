@@ -30,7 +30,8 @@ def login(request):
             },
             'username': user.username,
             'user_type': user.user_type,
-            'location': user.location.name if user.location else None,
+            'location_id': user.location.id if user.location else None,  
+            'location': user.location.name if user.location else None,  
         }
         return Response(response_data, status=status.HTTP_200_OK)
 

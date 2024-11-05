@@ -13,7 +13,7 @@ from api.v1.houses.serializers import HouseCreateSerializer,HouseListingHomePage
 def houses(request):
     location_id = request.query_params.get('location_id', None)
     try:
-        if location_id is not None and int(location_id) == 0:
+        if location_id is None or location_id == 'null' or int(location_id) == 0:
             house_listings = HouseListing.objects.all()
         elif location_id is not None:
             house_listings = HouseListing.objects.filter(location_city__id=location_id)
