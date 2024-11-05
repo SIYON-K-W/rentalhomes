@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const ImageGallery = async ({ featuredImage, galleryImages }) => {
 	return (
-		<div className="grid grid-cols-2 gap-4 rounded-lg overflow-hidden">
+		<div className="grid grid-cols-2 gap-3 rounded-lg overflow-hidden">
 			<div
 				className="w-full h-auto relative"
 				style={{ aspectRatio: "16/11" }}>

@@ -3,10 +3,10 @@ import Link from "next/link";
 
 const Customer = async ({ connected_houses }) => {
 	return (
-		<div className="w-4/5 flex flex-col gap-6">
+		<div className="w-4/5 flex flex-col gap-6 max-6xl:w-full">
 			<h4 className="font-bold text-xl text-center">Connected Houses</h4>
 			{connected_houses.length >= 1 ? (
-				<ul className="grid grid-cols-3 gap-4">
+				<ul className="grid grid-cols-3 gap-4 max-3xl:grid-cols-2 max-xl:grid-cols-1">
 					{connected_houses.map((house) => (
 						<li className="border rounded-lg" key={house.id}>
 							<div className="w-full h-auto relative aspect-video">

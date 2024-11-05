@@ -2,7 +2,7 @@
 
 import { useAuth } from "@/context/Authcontext";
 
-const Logout = () => {
+const Logout = ({ style }) => {
 	const { user, handleLogin } = useAuth();
 	console.log(user);
 
@@ -35,9 +35,7 @@ const Logout = () => {
 		}
 	};
 	return (
-		<button
-			onClick={handleLogout}
-			className="px-[26px] py-[7px] text-white bg-black rounded-[10px]">
+		<button onClick={handleLogout} className={`${style}`}>
 			Logout
 		</button>
 	);

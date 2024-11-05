@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Footer = async () => {
 	return (
-		<footer className="bg-gray-900 text-white py-14">
+		<footer className="bg-gray-900 text-white py-14 max-3xl:pb-[88px]">
 			<section className="wrapper">
 				<div className="flex justify-between items-start flex-wrap max-5xl:gap-7 max-3xl:flex-col">
 					<div className="w-[25%] max-5xl:w-[40%] max-3xl:w-full">

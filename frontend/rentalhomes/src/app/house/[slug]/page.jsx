@@ -47,8 +47,8 @@ const house = async ({ params }) => {
 							galleryImages={house.gallery_images}
 						/>
 					</div>
-					<div className="flex items-center justify-between">
-						<div className="w-7/12 flex flex-col gap-5">
+					<div className="flex items-center justify-between max-5xl:flex-col max-5xl:gap-8">
+						<div className="w-7/12 flex flex-col gap-5 max-5xl:w-full">
 							<div>
 								<h5 className="text-2xl font-semibold capitalize">
 									{house.sub_title} in {house.location_city}
@@ -116,13 +116,13 @@ const house = async ({ params }) => {
 								</h6>
 							</div>
 						</div>
-						<div className="w-1/3">
+						<div className="w-1/3 max-5xl:w-full">
 							<div className="rounded-xl p-6 border border-[#dddddd] flex flex-col gap-6">
 								<h5 className="text-2xl font-semibold">
 									&#8377;{house.rent_amount}
 								</h5>
-								<ul className="border grid grid-cols-2 border-black rounded-lg">
-									<li className="border-r p-3">
+								<ul className="border grid grid-cols-2 max-md:grid-cols-1 border-black rounded-lg">
+									<li className="md:border-r max-md:border-b p-3">
 										<h6 className="capitalize font-semibold">
 											bedrooms
 										</h6>
@@ -151,33 +151,35 @@ const house = async ({ params }) => {
 										<span>{house.property_type}</span>
 									</li>
 								</ul>
-								<div className="p-6 flex flex-col gap-1 rounded-lg shadow-md border">
-									<div className="flex items-center mb-2">
-										<h5 className="font-semibold text-base capitalize mr-2">
-											Phone Number:
-										</h5>
-										<Link
-											href={`tel:${house.phone_number}`}
-											className="text-blue-600 hover:text-blue-800 transition-colors duration-200">
-											{house.phone_number}
-										</Link>
+								<div className="flex flex-col gap-6 max-5xl:flex-row max-5xl:items-center max-3xl:flex-col">
+									<div className="p-6 flex flex-col gap-1 rounded-lg shadow-md border max-5xl:w-[50%] max-3xl:w-full">
+										<div className="flex items-center mb-2 max-md:flex-col">
+											<h5 className="font-semibold text-base capitalize mr-2">
+												Phone Number:
+											</h5>
+											<Link
+												href={`tel:${house.phone_number}`}
+												className="text-blue-600 hover:text-blue-800 transition-colors duration-200">
+												{house.phone_number}
+											</Link>
+										</div>
+										<div className="flex items-center max-md:flex-col">
+											<h5 className="font-semibold text-base capitalize mr-2">
+												Email ID:
+											</h5>
+											<Link
+												href={`mailto:${house.contact_email}`}
+												className="text-blue-600 hover:text-blue-800 transition-colors duration-200">
+												{house.contact_email}
+											</Link>
+										</div>
 									</div>
-									<div className="flex items-center">
-										<h5 className="font-semibold text-base capitalize mr-2">
-											Email ID:
-										</h5>
-										<Link
-											href={`mailto:${house.contact_email}`}
-											className="text-blue-600 hover:text-blue-800 transition-colors duration-200">
-											{house.contact_email}
-										</Link>
-									</div>
+									<Connect
+										isconnected={house.is_connected}
+										isowner={house.is_owner}
+										id={house.id}
+									/>
 								</div>
-								<Connect
-									isconnected={house.is_connected}
-									isowner={house.is_owner}
-									id={house.id}
-								/>
 							</div>
 						</div>
 					</div>

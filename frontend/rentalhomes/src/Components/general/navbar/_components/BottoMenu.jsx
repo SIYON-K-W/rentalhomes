@@ -38,8 +38,8 @@ function Bottomenu() {
 							<Link
 								href={Element.to}
 								className={`${
-									pathname === Element.to ? "" : ""
-								}flex items-center flex-col gap-1 text-slate-600`}>
+									pathname === Element.to ? "active" : ""
+								} flex items-center flex-col gap-1 text-slate-600`}>
 								{Element.icon}
 								<p className="capitalize text-xs max-xl:font-custom1">
 									{Element.P}

@@ -52,7 +52,7 @@ const Connect = ({ isconnected, isowner, id }) => {
 	};
 
 	return (
-		<div className="flex flex-col gap-2 items-center">
+		<div className="flex flex-col gap-2 items-center max-5xl:w-[50%] max-3xl:w-full">
 			{isconnected || connected ? (
 				<button className="capitalize w-full py-[15px] bg-[#f59fb9] text-white rounded-lg">
 					connected

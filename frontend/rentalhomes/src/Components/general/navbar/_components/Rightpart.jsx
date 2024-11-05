@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import Links from "./Links";
 import Location from "./Location";
-import Logout from "../../../../../public/Components/general/navbar/_components/Logout";
 import Bottomenu from "./BottoMenu";
+import Logout from "./Logout";
 
 const Rightpart = ({ locations }) => {
 	const [loaded, SetLoaded] = useState(false);
@@ -24,12 +24,15 @@ const Rightpart = ({ locations }) => {
 					<div className="flex items-center gap-10 max-3xl:hidden">
 						<Links />
 					</div>
-
 					<Bottomenu />
 					{user && user.user_type === "owner" ? (
 						<Location locations={locations.data} />
 					) : (
-						<Logout />
+						<Logout
+							style={
+								"px-[26px] py-[7px] text-white bg-black rounded-[10px]"
+							}
+						/>
 					)}
 				</div>
 			) : (
