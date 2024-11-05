@@ -54,44 +54,37 @@ const Dashboard = async ({ isowner, data }) => {
 									<></>
 								)}
 							</div>
-							<div
-								className={`${
-									isowner
-										? "grid grid-cols-3 gap-6"
-										: "flex items-center"
-								}`}>
-								{isowner ? (
-									<>
-										<div className="flex flex-col items-center gap-2">
-											<h4 className="font-semibold capitalize">
-												owned houses
-											</h4>
-											<span>
-												{data.total_owned_houses}{" "}
-											</span>
-										</div>
-										<div className="flex flex-col items-center gap-2">
-											<h4 className="font-semibold capitalize">
-												customers
-											</h4>
-											<span>
-												{data.total_connected_customers}
-											</span>
-										</div>
-										<div className="flex flex-col items-center gap-2">
-											<h4 className="font-semibold capitalize">
-												your location
-											</h4>
-											<span>{user.location}</span>
-										</div>
-									</>
-								) : (
-									<span className="font-semibold capitalize">
-										{data.total_connected_houses} connected
-										houses
-									</span>
-								)}
-							</div>
+							{isowner ? (
+								<div className="grid grid-cols-3 gap-6 max-md:grid-cols-1">
+									<div className="flex flex-col items-center gap-2 max-md:gap-1">
+										<h4 className="font-semibold capitalize">
+											owned houses
+										</h4>
+										<span>{data.total_owned_houses} </span>
+									</div>
+									<div className="flex flex-col items-center gap-2 max-md:gap-1">
+										<h4 className="font-semibold capitalize">
+											customers
+										</h4>
+										<span>
+											{data.total_connected_customers}
+										</span>
+									</div>
+									<div className="flex flex-col items-center gap-2 max-md:gap-1">
+										<h4 className="font-semibold capitalize">
+											your location
+										</h4>
+										<span>{user.location}</span>
+									</div>
+								</div>
+							) : (
+								<div className="flex flex-col items-center gap-1 max-md:gap-1">
+									<h4 className="font-semibold capitalize">
+										connected houses
+									</h4>
+									<span>{data.total_connected_houses} </span>
+								</div>
+							)}
 						</div>
 					</div>
 					<div className="bg-slate-400 h-[1px] w-4/5 mt-7 max-6xl:w-full"></div>
