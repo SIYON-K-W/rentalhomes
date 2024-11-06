@@ -1,6 +1,7 @@
 import re
 
 from django.core.exceptions import ValidationError
+
 from rest_framework import serializers
 
 from houses.models import HouseListing,HouseImage
@@ -8,7 +9,7 @@ from houses.models import HouseListing,HouseImage
 
 
 class HouseListingHomePageSerializer(serializers.ModelSerializer):
-    location_city = serializers.CharField(source='location_city.name')  # Use related field's name
+    location_city = serializers.CharField(source='location_city.name') 
 
     class Meta:
         model = HouseListing

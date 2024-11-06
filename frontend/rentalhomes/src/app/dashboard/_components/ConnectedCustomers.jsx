@@ -53,7 +53,7 @@ const ConnectedCustomers = () => {
 						className="background-overlay"
 						onClick={hideOverlay}></div>
 					<div
-						className={`absolute animate-opa bg-white h-[79vh] z-20 top-[25px] left-[22%] w-[65%] max-3xl:h-[68vh] max-3xl:w-full max-3xl:left-0 py-6 flex-col gap-3 border-black border rounded-lg overflow-hidden flex max-md:py-6 px-4`}>
+						className={`absolute animate-opa bg-white h-[79vh] z-20 top-[25px] left-[22%] w-[65%] max-3xl:h-[68vh] max-3xl:w-full max-3xl:left-0 py-6 flex-col gap-3 border-black border rounded-lg overflow-hidden flex max-md:px-4 px-6`}>
 						<div className="flex items-end justify-end pr-3">
 							<IoCloseSharp
 								className="text-2xl cursor-pointer"
@@ -138,9 +138,11 @@ const ConnectedCustomers = () => {
 															</span>
 														</h5>
 														<Link
-															href={`tel:${customer.email}`}
+															href={`tel:${customer.phone_number}`}
 															className="text-blue-600">
-															1234567890123
+															{
+																customer.phone_number
+															}
 														</Link>
 													</div>
 												</div>

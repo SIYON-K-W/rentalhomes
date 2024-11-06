@@ -1,6 +1,8 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MinValueValidator
+
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 class HouseListing(models.Model):
     owner = models.ForeignKey('auth_user.CustomUser', on_delete=models.CASCADE, related_name='house_listings')
@@ -54,6 +56,7 @@ class HouseListing(models.Model):
 
     def __str__(self):
         return f"{self.property_type} - {self.location_city}"
+
 
 
 class HouseImage(models.Model):

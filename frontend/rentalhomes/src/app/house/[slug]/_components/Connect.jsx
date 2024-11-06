@@ -2,6 +2,7 @@
 
 import Cookies from "js-cookie";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const Connect = ({ isconnected, isowner, id }) => {
 	const [connected, setConnected] = useState(false);
@@ -43,6 +44,7 @@ const Connect = ({ isconnected, isowner, id }) => {
 
 			const data = await res.json();
 			setConnected(true);
+			toast.success("Connected successfully");
 			console.log("Connected successfully:", data);
 		} catch (error) {
 			console.error("Error during fetch:", error);
