@@ -1,5 +1,3 @@
-from django.utils import timezone
-
 import pytz
 
 from rest_framework import serializers
@@ -80,13 +78,14 @@ class ConnectedCustomerSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='customer.first_name', read_only=True)
     last_name = serializers.CharField(source='customer.last_name', read_only=True)
     email = serializers.EmailField(source='customer.email', read_only=True)
+    phone_number = serializers.CharField(source='customer.phone_number', read_only=True)
     customer_id = serializers.IntegerField(source='customer.id', read_only=True)
     connected_date = serializers.SerializerMethodField()  
     connected_time = serializers.SerializerMethodField()  
 
     class Meta:
         model = Connection
-        fields = ['customer_id', 'profile_image', 'first_name', 'last_name', 'email', 'connected_date', 'connected_time']
+        fields = ['customer_id', 'profile_image', 'first_name', 'last_name', 'email','phone_number','connected_date', 'connected_time']
 
     def get_connected_date(self, obj):
         local_tz = pytz.timezone('Asia/Kolkata') 
@@ -94,7 +93,6 @@ class ConnectedCustomerSerializer(serializers.ModelSerializer):
         return connected_at_local.strftime("%d/%m/%Y")
 
     def get_connected_time(self, obj):
-        # Convert to local timezone
         local_tz = pytz.timezone('Asia/Kolkata') 
         connected_at_local = obj.connected_at.astimezone(local_tz)
         return connected_at_local.strftime("%I:%M %p")

@@ -35,7 +35,8 @@ const getData = async (id) => {
 };
 
 const house = async ({ params }) => {
-	const data = await getData(params.slug);
+	const { slug } = await params;
+	const data = await getData(slug);
 	const house = data.data;
 	return (
 		<section className="py-12">
@@ -81,8 +82,7 @@ const house = async ({ params }) => {
 										}
 										alt="owner image"
 										fill={true}
-										objectFit="cover"
-										className="rounded-full"
+										className="rounded-full object-cover"
 									/>
 								</div>
 								<div>

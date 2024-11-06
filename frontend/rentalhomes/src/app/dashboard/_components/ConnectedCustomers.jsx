@@ -74,7 +74,7 @@ const ConnectedCustomers = () => {
 								className={`grid grid-cols-2 max-5xl:grid-cols-1 h-full w-full gap-3 overflow-x-auto scroll-container`}>
 								{customers.map((customer) => (
 									<li
-										className="border rounded-lg p-4 h-fit max-md:p-3"
+										className="border rounded-lg p-4 h-fit max-md:p-3 shadow-lg"
 										key={customer.customer_id}>
 										<div className="flex flex-col gap-4 max-md:gap-2">
 											<div className="flex items-center gap-4 max-md:flex-col">
@@ -118,8 +118,8 @@ const ConnectedCustomers = () => {
 														</div>
 													</div>
 													<div className="flex gap-1 max-md:flex-col items-center">
-														<h5 className="font-semibold">
-															Contact at{" "}
+														<h5 className="font-semibold capitalize">
+															email ID{" "}
 															<span className="max-md:hidden">
 																:
 															</span>
@@ -130,10 +130,20 @@ const ConnectedCustomers = () => {
 															{customer.email}
 														</Link>
 													</div>
+													<div className="flex gap-1 max-md:flex-col items-center">
+														<h5 className="font-semibold">
+															phone number{" "}
+															<span className="max-md:hidden">
+																:
+															</span>
+														</h5>
+														<Link
+															href={`tel:${customer.email}`}
+															className="text-blue-600">
+															1234567890123
+														</Link>
+													</div>
 												</div>
-												<button className="w-full py-2 bg-blue-500 text-white rounded-lg">
-													message
-												</button>
 											</div>
 										</div>
 									</li>

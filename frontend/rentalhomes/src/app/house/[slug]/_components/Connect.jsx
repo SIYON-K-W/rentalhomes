@@ -8,8 +8,6 @@ const Connect = ({ isconnected, isowner, id }) => {
 	const [error, setError] = useState("");
 	const handleconnect = async (id) => {
 		setError("");
-		console.log(id);
-
 		const tokenstring = Cookies.get("token");
 		if (!tokenstring) {
 			console.error("No token found in cookies.");

@@ -17,7 +17,7 @@ const AllImages = ({ featuredimage, galleryimages, closeimages }) => {
 							<Image
 								src={featuredimage}
 								alt="house image"
-								layout="fill"
+								fill={true}
 								className="object-cover"
 							/>
 						</div>
@@ -30,7 +30,7 @@ const AllImages = ({ featuredimage, galleryimages, closeimages }) => {
 									<Image
 										src={img.image}
 										alt={`Gallery Image ${index + 1}`}
-										layout="fill"
+										fill={true}
 										className="object-cover"
 									/>
 								</div>

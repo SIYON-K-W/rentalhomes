@@ -20,7 +20,6 @@ logger = logging.getLogger(__name__)
 def customer_dashboard(request):
     customer = request.user
 
-    # Check if the user is a customer
     if customer.user_type != 'customer':
         return Response({
             'status_id': 403,
@@ -30,20 +29,16 @@ def customer_dashboard(request):
         }, status=status.HTTP_403_FORBIDDEN)
 
     try:
-        # Count total connected houses
         connected_houses = Connection.objects.filter(customer=customer).select_related('house')
         total_connected_houses = connected_houses.count()
 
-        # Prepare connected houses data
         connected_houses_data = [
             ConnectedHouseSerializer(connection.house, context={'request': request}).data 
             for connection in connected_houses
         ]
 
-        # Serialize user details without including connected_houses
         user_data = CustomerDashboardSerializer(customer, context={'request': request}).data
 
-        # Prepare response data including total_connected_houses
         response_data = {
             'status_id': 200,
             'error': False,
@@ -77,7 +72,7 @@ def customer_dashboard(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, IsOwner])  # Ensure this custom permission checks if user is an owner
+@permission_classes([IsAuthenticated, IsOwner])  
 def owner_dashboard(request):
     try:
         owner = request.user
@@ -88,7 +83,6 @@ def owner_dashboard(request):
 
         owned_houses_data = HouseSummarySerializer(owned_houses, many=True, context={'request': request}).data
 
-        # Structure the successful response
         response_data = {
             'status_id': 200,
             'error': False,
@@ -103,7 +97,6 @@ def owner_dashboard(request):
         return Response(response_data, status=status.HTTP_200_OK)
 
     except DatabaseError as db_error:
-        # Log database-related issues and return an error message
         logger.error(f"Database error occurred: {db_error}")
         return Response({
             'status_id': 500,
@@ -113,7 +106,6 @@ def owner_dashboard(request):
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     except AttributeError as attr_error:
-        # Handle missing fields or attributes
         logger.error(f"Attribute error: {attr_error}")
         return Response({
             'status_id': 500,
@@ -123,7 +115,6 @@ def owner_dashboard(request):
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     except Exception as e:
-        # Catch any other unexpected errors
         logger.error(f"Unexpected error: {e}")
         return Response({
             'status_id': 500,
@@ -181,11 +172,10 @@ def get_connected_customers(request, house_id):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, IsOwner])  # Use IsOwner permission class
+@permission_classes([IsAuthenticated, IsOwner]) 
 def get_user_location(request):
     user = request.user
 
-    # Check if the owner has a location assigned
     if user.location is None:
         return Response(
             {
@@ -197,7 +187,6 @@ def get_user_location(request):
             status=status.HTTP_404_NOT_FOUND  
         )
 
-    # Serialize the user's location
     serializer = UserLocationSerializer(user)
     
     response_data = {
