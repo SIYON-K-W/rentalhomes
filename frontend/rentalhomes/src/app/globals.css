@@ -40,6 +40,11 @@ body {
 .scroll-container::-webkit-scrollbar {
 	display: none;
 }
+
 .active {
 	color: #6e00be !important;
+}
+
+.toast-position {
+	top: 4.1rem !important;
 }

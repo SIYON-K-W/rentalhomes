@@ -29,10 +29,10 @@ export default function RootLayout({ children }) {
 		<html lang="en">
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+				<ToastContainer autoClose={1500} className="toast-position" />
 				<AuthProvider>
 					<LocationProvider>
 						<HouseProvider>
-							<ToastContainer />
 							<Navbar />
 							<div className="pt-[65px]">{children}</div>
 							<Footer />

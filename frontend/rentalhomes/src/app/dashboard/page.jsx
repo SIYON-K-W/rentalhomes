@@ -7,8 +7,6 @@ const getData = async (isowner) => {
 
 	if (tokenData) {
 		const token = JSON.parse(tokenData.value);
-		console.log(token);
-
 		const res = await fetch(
 			`http://127.0.0.1:8000/api/v1/profile/${
 				isowner ? "owner" : "customer"

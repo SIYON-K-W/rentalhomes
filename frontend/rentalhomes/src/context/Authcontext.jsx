@@ -4,6 +4,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
+import { toast } from "react-toastify";
+
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -14,7 +16,6 @@ export function AuthProvider({ children }) {
 		switch (action.type) {
 			case "Login":
 				const { token, user_type } = action.payload;
-				setUser(action.payload);
 				Cookies.set("token", JSON.stringify(token), {
 					expires: 7,
 					secure: true,
@@ -27,20 +28,21 @@ export function AuthProvider({ children }) {
 					sameSite: "Lax",
 					path: "/",
 				});
+				setUser(action.payload);
 				if (user_type === "owner") {
 					router.push("/dashboard");
-					break;
+				} else {
+					router.push("/");
 				}
-				router.push("/");
+				toast.success("Logined successfully");
 				break;
-
 			case "Logout":
 				setUser(null);
 				Cookies.remove("token");
 				Cookies.remove("userType");
+				toast.success("Logout Succesfully done");
 				router.push("/login");
 				break;
-
 			default:
 				break;
 		}

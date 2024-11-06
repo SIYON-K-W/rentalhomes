@@ -118,9 +118,6 @@ const SignupPage = ({ locations }) => {
 				return;
 			}
 			const res = await response.json();
-			if (res.data.token) {
-				toast.success("Registered successfully");
-			}
 			const data = {
 				token: res.data.token,
 				user_type: res.data.user_type,

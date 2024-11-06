@@ -42,9 +42,6 @@ const Login = () => {
 			}
 			if (response.ok) {
 				const res = await response.json();
-				if (res.data.token) {
-					toast.success("Logined successfully");
-				}
 				const data = {
 					token: res.data.token,
 					user_type: res.data.user_type,

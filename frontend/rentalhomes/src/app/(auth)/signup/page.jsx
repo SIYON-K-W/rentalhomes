@@ -15,7 +15,6 @@ const getData = async () => {
 const page = async () => {
 	const locations = await getData();
 	console.log(locations);
-
 	return (
 		<div className="py-6 bg-gray-100">
 			<div className="wrapper">

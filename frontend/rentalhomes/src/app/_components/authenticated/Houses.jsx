@@ -11,7 +11,7 @@ const Houses = () => {
 	const [houses, setHouses] = useState([]);
 	const [error, setError] = useState(null);
 
-	const { location, updateLocation } = useLocation();
+	const { location } = useLocation();
 
 	useEffect(() => {
 		setError(null);
@@ -22,7 +22,6 @@ const Houses = () => {
 					const token = JSON.parse(tokenString);
 
 					const locationId = location;
-					console.log(locationId);
 
 					const res = await fetch(
 						`http://127.0.0.1:8000/api/v1/houses?location_id=${locationId}`,
@@ -35,7 +34,6 @@ const Houses = () => {
 
 					if (!res.ok) {
 						const errordata = await res.json();
-						console.log(errordata);
 						setError(errordata.message);
 						return;
 					}
@@ -49,8 +47,6 @@ const Houses = () => {
 
 		fetchData();
 	}, [location]);
-
-	console.log(houses);
 	return (
 		<section className="py-12">
 			<section className="wrapper">
