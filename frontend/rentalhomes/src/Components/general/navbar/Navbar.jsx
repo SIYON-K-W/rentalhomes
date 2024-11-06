@@ -35,9 +35,9 @@ const Navbar = async () => {
 					</div>
 					<Rightpart locations={locations} />
 				</section>
-			</section>
-			<section className="relative">
-				<ConnectedCustomers />
+				<section className="relative">
+					<ConnectedCustomers />
+				</section>
 			</section>
 		</header>
 	);

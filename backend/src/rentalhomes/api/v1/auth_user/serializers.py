@@ -46,10 +46,13 @@ class SignupSerializer(serializers.ModelSerializer):
         write_only=True, required=True, error_messages={"required": "Please confirm your password."}
     )
     phone_number = serializers.CharField(
-        required=True, max_length=10,
+        required=True, max_length=13,
         validators=[UniqueValidator(queryset=User.objects.all(), message="Phone number already exists.")]
     )
+    
+
     profile_image = serializers.ImageField(required=False)
+
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'password', 'password2', 'user_type', 'location', 'profile_image')
@@ -59,11 +62,15 @@ class SignupSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"password": "Passwords don't match."})
         
         phone_number = attrs.get('phone_number')
-        if not phone_number.isdigit():
+        if not phone_number.startswith('+91'):
+             raise serializers.ValidationError({"phone_number": "Phone number must start with '+91'."})
+        number_without_prefix = phone_number[3:]
+        print(number_without_prefix)
+        if not number_without_prefix.isdigit():
             raise serializers.ValidationError({"phone_number": "Phone number must contain only digits."})
-        
-        if len(phone_number) != 10:
-            raise serializers.ValidationError({"phone_number": "Phone number must be exactly 10 digits long."})
+        if len(number_without_prefix) != 10:
+             raise serializers.ValidationError({"phone_number": "Phone number must be exactly 10 digits."})
+
     
 
         user_type = attrs.get('user_type')

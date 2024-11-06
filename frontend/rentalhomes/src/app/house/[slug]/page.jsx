@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ImageGallery from "./_components/ImageGallery";
 import Connect from "./_components/Connect";
+import { IoStar } from "react-icons/io5";
 
 const getData = async (id) => {
 	const cookieStore = await cookies();
@@ -57,10 +58,17 @@ const house = async ({ params }) => {
 								<span className="text-[#494949] capitalize text-lg pl-1">
 									{house.special_about_place}
 								</span>
-								<div className="font-semibold text-lg flex items-center gap-1 pl-1">
-									<span>4.5</span>
+								<div className="flex items-center gap-1 pl-1">
+									<div className="flex items-baseline gap-1">
+										<IoStar />
+										<span className="text-lg font-semibold">
+											4.5
+										</span>
+									</div>
 									<span>&</span>
-									<span>56 reviews</span>
+									<span className="font-semibold text-lg ">
+										56 reviews
+									</span>
 								</div>
 							</div>
 							<div className="bg-[#e5e7eb] h-[1px] w-full"></div>
@@ -151,7 +159,7 @@ const house = async ({ params }) => {
 										<span>{house.property_type}</span>
 									</li>
 								</ul>
-								<div className="flex flex-col gap-6 max-5xl:flex-row max-5xl:items-center max-3xl:flex-col">
+								<div className="flex flex-col gap-6 max-5xl:flex-row max-5xl:items-end max-3xl:flex-col">
 									<div className="p-6 flex flex-col gap-1 rounded-lg shadow-md border max-5xl:w-[50%] max-3xl:w-full">
 										<div className="flex items-center mb-2 max-md:flex-col">
 											<h5 className="font-semibold text-base capitalize mr-2">

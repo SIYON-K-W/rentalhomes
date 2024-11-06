@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/Authcontext";
+import { useLocation } from "@/context/Locationcontext";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,6 +25,7 @@ const SignupPage = ({ locations }) => {
 	const { handleLogin } = useAuth();
 	const SearchParams = useSearchParams();
 	const name = SearchParams.get("type");
+	const { updateLocation } = useLocation();
 
 	useEffect(() => {
 		if (name === "owner") {
@@ -80,7 +82,7 @@ const SignupPage = ({ locations }) => {
 		formDataToSubmit.append("last_name", formData.lastName);
 		formDataToSubmit.append("username", formData.username);
 		formDataToSubmit.append("email", formData.email);
-		formDataToSubmit.append("phone_number", formData.phoneNumber);
+		formDataToSubmit.append("phone_number", `+91${formData.phoneNumber}`);
 		formDataToSubmit.append("password", formData.password);
 		formDataToSubmit.append("password2", formData.confirmPassword);
 		formDataToSubmit.append("user_type", isOwner ? "owner" : "customer");
@@ -117,10 +119,10 @@ const SignupPage = ({ locations }) => {
 			}
 			const res = await response.json();
 			const data = {
-				token: res.data,
-				user_type: res.user_type,
+				token: res.data.token,
+				user_type: res.data.user_type,
 			};
-
+			updateLocation(res.data.location_id);
 			handleLogin({ type: "Login", payload: data });
 		} catch (error) {
 			console.error("Error:", error);

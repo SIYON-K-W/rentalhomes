@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { IoStar } from "react-icons/io5";
 
 const Houses = () => {
 	const [houses, setHouses] = useState([]);
@@ -80,20 +81,26 @@ const Houses = () => {
 										/>
 									</div>
 
-									<div className="p-4">
-										<h3 className="text-lg font-semibold capitalize">
-											{house.location_city},india
-										</h3>
-										<span className="text-gray-500 capitalize">
-											{house.special_about_place}
-										</span>
-										<p className="text-gray-500">
-											For {house.lease_duration}
-										</p>
-										<h2 className="text-lg font-semibold capitalize">
-											&#8377;
-											{house.formatted_rent_amount}
-										</h2>
+									<div className="p-4 flex items-start justify-between">
+										<div>
+											<h3 className="text-lg font-semibold capitalize">
+												{house.location_city},india
+											</h3>
+											<span className="text-gray-500 capitalize">
+												{house.special_about_place}
+											</span>
+											<p className="text-gray-500">
+												For {house.lease_duration}
+											</p>
+											<h2 className="text-lg font-semibold capitalize">
+												&#8377;
+												{house.formatted_rent_amount}
+											</h2>
+										</div>
+										<div className="flex items-baseline gap-1">
+											<IoStar />
+											<span className="text-lg">4.5</span>
+										</div>
 									</div>
 								</Link>
 							</div>

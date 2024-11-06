@@ -22,8 +22,10 @@ def login(request):
             'error': False,
             'message': "Successfully logged in",
             'data': {
-                'refresh': serializer.validated_data['refresh'],
-                'access': serializer.validated_data['access'],
+                 'token':{
+                    'refresh': serializer.validated_data['refresh'],
+                    'access': serializer.validated_data['access'],
+                },
                 'user_type': serializer.validated_data['user_type'],
                 'location_id': serializer.validated_data['location_id'],
             }
@@ -67,8 +69,10 @@ def signup(request):
             'data': {
                 'user_type': user.user_type,
                 'location_id': user.location.id if user.location else None,
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
+                'token':{
+                   'refresh': str(refresh),
+                   'access': str(refresh.access_token),
+                }
             },
         }
         return Response(response_data, status=status.HTTP_201_CREATED)

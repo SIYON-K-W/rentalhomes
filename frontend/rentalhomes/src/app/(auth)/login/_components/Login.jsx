@@ -9,7 +9,7 @@ const Login = () => {
 	const [password, SetPassword] = useState("");
 	const [message, SetMessage] = useState("");
 
-	const { location, updateLocation } = useLocation();
+	const { updateLocation } = useLocation();
 
 	const { handleLogin } = useAuth();
 
@@ -42,13 +42,11 @@ const Login = () => {
 			}
 			if (response.ok) {
 				const res = await response.json();
-				console.log(res);
-
 				const data = {
-					token: res.data,
-					user_type: res.user_type,
+					token: res.data.token,
+					user_type: res.data.user_type,
 				};
-				updateLocation(res.location_id);
+				updateLocation(res.data.location_id);
 				handleLogin({ type: "Login", payload: data });
 			}
 		} catch (error) {

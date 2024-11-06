@@ -3,6 +3,7 @@ import { useHouseContext } from "@/context/HouseContext";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
+import { IoCloseSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 
 const ConnectedCustomers = () => {
@@ -52,14 +53,14 @@ const ConnectedCustomers = () => {
 						className="background-overlay"
 						onClick={hideOverlay}></div>
 					<div
-						className={`absolute bg-white h-fit min-h-[45vh] max-h-[79vh] z-20  ${
-							customers.length <= 1
-								? "top-[88px] left-[34%]"
-								: customers.length === 2
-								? "top-[95px] left-[25%]"
-								: "top-[25px] left-[25%]"
-						} w-fit min-w-[32%] max-w-[58%] p-10 flex-col gap-3 border-black border rounded-lg overflow-hidden flex`}>
-						<h4 className="font-bold text-xl text-center">
+						className={`absolute animate-opa bg-white h-[79vh] z-20 top-[25px] left-[22%] w-[65%] max-3xl:h-[68vh] max-3xl:w-full max-3xl:left-0 py-6 flex-col gap-3 border-black border rounded-lg overflow-hidden flex max-md:py-6 px-4`}>
+						<div className="flex items-end justify-end pr-3">
+							<IoCloseSharp
+								className="text-2xl cursor-pointer"
+								onClick={hideOverlay}
+							/>
+						</div>
+						<h4 className="font-bold text-xl text-center mb-2">
 							Connected Customers
 						</h4>
 						{customers.length <= 0 ? (
@@ -70,17 +71,13 @@ const ConnectedCustomers = () => {
 							</div>
 						) : (
 							<ul
-								className={`grid ${
-									customers.length === 1
-										? "grid-cols-1"
-										: "grid-cols-2"
-								} h-full w-full gap-3 overflow-x-auto scroll-container`}>
+								className={`grid grid-cols-2 max-5xl:grid-cols-1 h-full w-full gap-3 overflow-x-auto scroll-container`}>
 								{customers.map((customer) => (
 									<li
-										className="border rounded-lg p-4 h-fit"
+										className="border rounded-lg p-4 h-fit max-md:p-3"
 										key={customer.customer_id}>
-										<div className="flex flex-col gap-4">
-											<div className="flex items-center gap-4">
+										<div className="flex flex-col gap-4 max-md:gap-2">
+											<div className="flex items-center gap-4 max-md:flex-col">
 												<div className="relative w-12 h-12">
 													<Image
 														src={`${
@@ -99,9 +96,12 @@ const ConnectedCustomers = () => {
 											</div>
 											<div className="flex flex-col gap-3">
 												<div className="flex flex-col gap-1">
-													<div className="flex gap-1">
+													<div className="flex gap-1 max-md:flex-col items-center">
 														<h5 className="font-semibold">
-															Connected at :
+															Connected at{" "}
+															<span className="max-md:hidden">
+																:
+															</span>
 														</h5>
 														<div className="flex gap-1">
 															<span>
@@ -117,9 +117,12 @@ const ConnectedCustomers = () => {
 															</span>
 														</div>
 													</div>
-													<div className="flex gap-1">
+													<div className="flex gap-1 max-md:flex-col items-center">
 														<h5 className="font-semibold">
-															Contact at :
+															Contact at{" "}
+															<span className="max-md:hidden">
+																:
+															</span>
 														</h5>
 														<Link
 															href={`mailto:${customer.email}`}
