@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { toast } from "react-toastify";
+
 const SignupPage = ({ locations }) => {
 	const [isOwner, setIsOwner] = useState(false);
 	const [message, setMessage] = useState("");
@@ -124,6 +126,7 @@ const SignupPage = ({ locations }) => {
 			};
 			updateLocation(res.data.location_id);
 			handleLogin({ type: "Login", payload: data });
+			toast.success("Registration successfull");
 		} catch (error) {
 			console.error("Error:", error);
 			alert("An unexpected error occurred. Please try again later.");

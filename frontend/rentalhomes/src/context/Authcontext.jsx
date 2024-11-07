@@ -4,8 +4,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 
-import { toast } from "react-toastify";
-
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
@@ -34,13 +32,11 @@ export function AuthProvider({ children }) {
 				} else {
 					router.push("/");
 				}
-				toast.success("Logined successfully");
 				break;
 			case "Logout":
 				setUser(null);
 				Cookies.remove("token");
 				Cookies.remove("userType");
-				toast.success("Logout Succesfully done");
 				router.push("/login");
 				break;
 			default:

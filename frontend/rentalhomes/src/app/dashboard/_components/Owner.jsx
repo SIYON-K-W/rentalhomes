@@ -29,7 +29,7 @@ const Owner = async ({ owned_houses }) => {
 											For {house.lease_duration}
 										</p>
 										<h2 className="text-lg font-semibold capitalize">
-											&#8377;{house.rent_amount}
+											&#8377;{house.formatted_rent_amount}
 										</h2>
 									</div>
 									<div className="flex items-baseline gap-1">

@@ -2,6 +2,8 @@
 
 import { useAuth } from "@/context/Authcontext";
 
+import { toast } from "react-toastify";
+
 const Logout = ({ style }) => {
 	const { user, handleLogin } = useAuth();
 	console.log(user);
@@ -25,6 +27,7 @@ const Logout = ({ style }) => {
 
 				if (response.ok) {
 					handleLogin({ type: "Logout" });
+					toast.success("Logout Succesfully done");
 					console.log(data.message);
 				} else {
 					console.error(data.message);

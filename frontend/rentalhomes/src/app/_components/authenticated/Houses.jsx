@@ -10,6 +10,7 @@ import { IoStar } from "react-icons/io5";
 const Houses = () => {
 	const [houses, setHouses] = useState([]);
 	const [error, setError] = useState(null);
+	const [loading, setLoading] = useState(true);
 
 	const { location } = useLocation();
 
@@ -42,11 +43,28 @@ const Houses = () => {
 				}
 			} catch (error) {
 				console.log(error);
+			} finally {
+				setLoading(false);
 			}
 		};
 
 		fetchData();
 	}, [location]);
+	if (loading) {
+		return (
+			<section className="py-12">
+				<section className="wrapper">
+					{loading && (
+						<div className="flex items-center justify-center min-h-[80vh]">
+							<p className="text-2xl font-semibold">
+								Loading....
+							</p>
+						</div>
+					)}
+				</section>
+			</section>
+		);
+	}
 	return (
 		<section className="py-12">
 			<section className="wrapper">

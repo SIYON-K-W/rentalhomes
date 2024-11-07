@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useAuth } from "@/context/Authcontext";
 import { useLocation } from "@/context/Locationcontext";
 
+import { toast } from "react-toastify";
+
 const Login = () => {
 	const [username, SetUsername] = useState("");
 	const [password, SetPassword] = useState("");
@@ -48,6 +50,7 @@ const Login = () => {
 				};
 				updateLocation(res.data.location_id);
 				handleLogin({ type: "Login", payload: data });
+				toast.success("Login successfull");
 			}
 		} catch (error) {
 			if (error.error) {

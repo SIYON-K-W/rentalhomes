@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import Propertype from "./Propertype";
 import { useRouter } from "next/navigation";
 
+import { toast } from "react-toastify";
+
 const AddForm = ({ locations }) => {
 	const [featuredImage, setFeaturedImage] = useState(null);
 	const [imageInputs, setImageInputs] = useState([
@@ -126,6 +128,7 @@ const AddForm = ({ locations }) => {
 					}
 				);
 				if (!res.ok) {
+					toast.error("House Creation Failed,Check Details Again");
 					const errordata = await res.json();
 					const fieldErrors = {};
 					let nonFieldErrors = [];
@@ -158,9 +161,12 @@ const AddForm = ({ locations }) => {
 
 					return;
 				}
-				const result = await res.json();
-				router.push("/dashboard");
-				console.log("House created successfully!", result);
+				if (res.ok) {
+					const result = await res.json();
+					toast.success("House Created Successfully");
+					router.push("/dashboard");
+					console.log("House created successfully!", result);
+				}
 			} catch (error) {
 				console.error("Error creating house:", error.data);
 			}

@@ -13,7 +13,7 @@ class ConnectedHouseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HouseListing
-        fields = ['id', 'featured_image', 'lease_duration', 'rent_amount', 'location_city']
+        fields = ['id', 'featured_image', 'lease_duration', 'formatted_rent_amount', 'location_city']
 
     def get_featured_image(self, obj):
         request = self.context.get('request')
@@ -56,7 +56,7 @@ class HouseSummarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HouseListing
-        fields = ['id', 'featured_image', 'lease_duration', 'rent_amount', 'location_city']
+        fields = ['id', 'featured_image', 'lease_duration', 'formatted_rent_amount', 'location_city']
 
     def get_featured_image(self, obj):
         request = self.context.get('request')
