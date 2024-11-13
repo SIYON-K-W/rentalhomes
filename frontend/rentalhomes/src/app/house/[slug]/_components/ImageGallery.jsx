@@ -27,7 +27,7 @@ const ImageGallery = ({ featuredImage, galleryImages }) => {
 						className="object-cover rounded-lg"
 					/>
 					<p className="absolute bottom-2 right-2 bg-gray-800 text-white px-3 py-1 rounded-lg text-sm 3xl:hidden">
-						1/{galleryImages.length}
+						1/{galleryImages.length + 1}
 					</p>
 				</div>
 				<div className="relative grid gap-2 h-full max-3xl:hidden">
