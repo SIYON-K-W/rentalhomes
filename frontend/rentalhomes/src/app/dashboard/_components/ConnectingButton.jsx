@@ -10,7 +10,7 @@ const ConnectingButton = ({ id }) => {
 
 	return (
 		<button
-			className="py-2 px-3 bg-blue-500 rounded-lg text-white"
+			className="py-2 px-3 bg-blue-500 rounded-lg text-white capitalize"
 			onClick={() => showtab(id)}>
 			customers
 		</button>

@@ -43,7 +43,7 @@ const ImageGallery = ({ featuredImage, galleryImages }) => {
 								className="object-cover rounded-lg"
 							/>
 							<button
-								className="border border-[#e240ff] absolute bottom-2 right-2 bg-white text-black px-[14px] py-[5px] rounded-md text-sm font-semibold"
+								className="border border-[#e240ff] capitalize absolute bottom-2 right-2 bg-white text-black px-[14px] py-[5px] rounded-md text-sm font-semibold"
 								onClick={showimages}>
 								Show photos
 							</button>
@@ -66,7 +66,7 @@ const ImageGallery = ({ featuredImage, galleryImages }) => {
 								</div>
 							))}
 							<button
-								className="border border-[#e240ff] absolute bottom-2 right-2 bg-white text-black px-[14px] py-[5px] rounded-md text-sm font-semibold"
+								className="border border-[#e240ff] capitalize absolute bottom-2 right-2 bg-white text-black px-[14px] py-[5px] rounded-md text-sm font-semibold"
 								onClick={showimages}>
 								Show photos
 							</button>
@@ -95,7 +95,7 @@ const ImageGallery = ({ featuredImage, galleryImages }) => {
 								</div>
 							))}
 							<button
-								className="border border-[#e240ff] absolute bottom-2 right-2 bg-white text-black px-[14px] py-[5px] rounded-md text-sm font-semibold"
+								className="border border-[#e240ff] capitalize absolute bottom-2 right-2 bg-white text-black px-[14px] py-[5px] rounded-md text-sm font-semibold"
 								onClick={showimages}>
 								Show photos
 							</button>
@@ -119,7 +119,7 @@ const ImageGallery = ({ featuredImage, galleryImages }) => {
 								</div>
 							))}
 							<button
-								className="border border-[#e240ff] absolute bottom-2 right-2 bg-white text-black px-[14px] py-[5px] rounded-md text-sm font-semibold"
+								className="border border-[#e240ff] capitalize absolute bottom-2 right-2 bg-white text-black px-[14px] py-[5px] rounded-md text-sm font-semibold"
 								onClick={showimages}>
 								Show photos
 							</button>

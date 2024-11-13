@@ -142,7 +142,7 @@ const SignupPage = ({ locations }) => {
 				<div className="flex justify-center mb-4">
 					<button
 						type="button"
-						className={`w-1/2 max-md:w-[48%] py-2 text-lg max-md:text-base font-semibold rounded-l-lg ${
+						className={`w-1/2 max-md:w-[48%] py-2 text-lg max-md:text-base font-semibold rounded-l-lg capitalize ${
 							!isOwner
 								? "bg-blue-500 text-white"
 								: "bg-gray-200 text-gray-500"
@@ -154,7 +154,7 @@ const SignupPage = ({ locations }) => {
 					</button>
 					<button
 						type="button"
-						className={`w-1/2 max-md:w-[48%] py-2 text-lg max-md:text-base font-semibold rounded-r-lg ${
+						className={`w-1/2 max-md:w-[48%] py-2 text-lg max-md:text-base font-semibold rounded-r-lg capitalize ${
 							isOwner
 								? "bg-blue-500 text-white"
 								: "bg-gray-200 text-gray-500"
@@ -284,7 +284,7 @@ const SignupPage = ({ locations }) => {
 				<p className="text-center text-[#ff0000]">{message}</p>
 				<button
 					type="submit"
-					className="w-full py-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600">
+					className="w-full py-2 mt-4 text-white bg-blue-500 rounded hover:bg-blue-600 capitalize">
 					Sign Up
 				</button>
 			</form>

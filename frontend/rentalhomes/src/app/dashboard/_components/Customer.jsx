@@ -33,7 +33,7 @@ const Customer = async ({ connected_houses }) => {
 										</h2>
 										<Link
 											href={`house/${house.id}`}
-											className="py-3 px-4 bg-blue-500 rounded-full text-white">
+											className="py-3 px-4 bg-blue-500 rounded-full text-white capitalize">
 											view house
 										</Link>
 									</div>

@@ -38,7 +38,7 @@ const Logout = ({ style }) => {
 		}
 	};
 	return (
-		<button onClick={handleLogout} className={`${style}`}>
+		<button onClick={handleLogout} className={`${style} capitalize`}>
 			Logout
 		</button>
 	);

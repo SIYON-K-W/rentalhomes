@@ -5,6 +5,7 @@ import { useAuth } from "@/context/Authcontext";
 import { useLocation } from "@/context/Locationcontext";
 
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 const Login = () => {
 	const [username, SetUsername] = useState("");
@@ -110,17 +111,20 @@ const Login = () => {
 							</p>
 							<button
 								type="submit"
-								className="w-full px-4 py-2 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">
+								className="capitalize w-full px-4 py-2 font-semibold text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">
 								Login
 							</button>
 						</form>
 						<p className="text-sm text-center text-gray-600">
 							Don't have an account?{" "}
-							<a
-								href="/signup"
-								className="text-blue-600 hover:underline">
+							<Link
+								href={{
+									pathname: "/signup",
+									query: { type: "customer" },
+								}}
+								className="text-blue-600 hover:underline capitalize">
 								Register
-							</a>
+							</Link>
 						</p>
 					</div>
 				</div>

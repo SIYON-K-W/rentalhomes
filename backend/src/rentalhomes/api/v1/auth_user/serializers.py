@@ -76,7 +76,6 @@ class SignupSerializer(serializers.ModelSerializer):
         user_type = attrs.get('user_type')
         if user_type not in ['owner', 'customer']:
             raise serializers.ValidationError({"user_type": "Invalid user type."})
-
         if user_type == 'owner' and not attrs.get('location'):
             raise serializers.ValidationError({"location": "Location is required for owners."})
         if user_type == 'customer' and attrs.get('location'):

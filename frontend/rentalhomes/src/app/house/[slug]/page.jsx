@@ -125,7 +125,7 @@ const house = async ({ params }) => {
 						<div className="w-1/3 max-5xl:w-full">
 							<div className="rounded-xl p-6 border border-[#dddddd] flex flex-col gap-6">
 								<h5 className="text-2xl font-semibold">
-									&#8377;{house.rent_amount}
+									&#8377;{house.formatted_rent_amount}
 								</h5>
 								<ul className="border grid grid-cols-2 max-md:grid-cols-1 border-black rounded-lg">
 									<li className="md:border-r max-md:border-b p-3">

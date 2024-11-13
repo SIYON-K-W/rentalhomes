@@ -43,7 +43,7 @@ const Rightpart = ({ locations }) => {
 								pathname: "/signup",
 								query: { type: "owner" },
 							}}
-							className="px-[26px] py-[7px] text-white bg-black rounded-[10px]">
+							className="px-[26px] py-[7px] text-white bg-black rounded-[10px] capitalize">
 							Register as Owner
 						</Link>
 						<Link
@@ -51,7 +51,7 @@ const Rightpart = ({ locations }) => {
 								pathname: "/signup",
 								query: { type: "customer" },
 							}}
-							className="px-[26px] py-[7px] text-black bg-transparent border rounded-[10px]">
+							className="px-[26px] py-[7px] text-black bg-transparent border rounded-[10px] capitalize">
 							Register as Customer
 						</Link>
 					</div>

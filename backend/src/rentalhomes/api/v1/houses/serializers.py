@@ -38,7 +38,7 @@ class HouseListingDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'sub_title', 'special_about_place', 'featured_image', 
             'location_city', 'exact_location', 'phone_number', 'contact_email', 
-            'number_of_guests', 'rent_amount', 'property_type', 'number_of_bedrooms', 
+            'number_of_guests', 'formatted_rent_amount', 'property_type', 'number_of_bedrooms', 
             'number_of_bathrooms', 'extra_features', 'lease_duration', 'parking_available', 
             'pet_friendly', 'created_at', 'gallery_images', 'is_connected', 'is_owner',
             'owner_profile_image', 'owner_first_name', 'owner_last_name'

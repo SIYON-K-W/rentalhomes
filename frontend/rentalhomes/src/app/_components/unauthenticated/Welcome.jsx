@@ -26,7 +26,7 @@ const Welcome = async () => {
 							<div className="flex justify-center items-center">
 								<Link
 									href={"/login"}
-									className="text-black text-center text-xl bg-white max-lg:bg-[#4d8cf5] px-9 py-2 max-lg:text-white max-md:px-8 rounded-lg hover:bg-[#4d8cf5] hover:text-white transition-all">
+									className="capitalize text-black text-center text-xl bg-white max-lg:bg-[#4d8cf5] px-9 py-2 max-lg:text-white max-md:px-8 rounded-lg hover:bg-[#4d8cf5] hover:text-white transition-all">
 									Login
 								</Link>
 							</div>

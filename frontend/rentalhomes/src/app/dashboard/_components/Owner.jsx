@@ -41,7 +41,7 @@ const Owner = async ({ owned_houses }) => {
 									<ConnectingButton id={house.id} />
 									<Link
 										href={`house/${house.id}`}
-										className="py-2 px-3 text-blue-500 rounded-lg bg-transparent border border-blue-400 text-center">
+										className="py-2 px-3 text-blue-500 rounded-lg bg-transparent border border-blue-400 text-center capitalize">
 										view house
 									</Link>
 								</div>
