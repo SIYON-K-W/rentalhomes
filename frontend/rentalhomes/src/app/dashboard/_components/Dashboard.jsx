@@ -74,7 +74,9 @@ const Dashboard = async ({ isowner, data }) => {
 										<h4 className="font-semibold capitalize">
 											your location
 										</h4>
-										<span>{user.location}</span>
+										<span className="capitalize">
+											{user.location}
+										</span>
 									</div>
 								</div>
 							) : (

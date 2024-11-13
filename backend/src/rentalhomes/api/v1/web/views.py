@@ -6,6 +6,7 @@ from rest_framework import status
 from web.models import Location
 from api.v1.web.serializers import LocationSerializer
 
+
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def list_locations(request):
