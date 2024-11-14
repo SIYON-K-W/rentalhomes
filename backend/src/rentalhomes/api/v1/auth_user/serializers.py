@@ -46,7 +46,7 @@ class SignupSerializer(serializers.ModelSerializer):
         write_only=True, required=True, error_messages={"required": "Please confirm your password."}
     )
     phone_number = serializers.CharField(
-        required=True, max_length=13,
+        required=True,
         validators=[UniqueValidator(queryset=User.objects.all(), message="Phone number already exists.")]
     )
     

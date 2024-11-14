@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { toast } from "react-toastify";
+import PasswordInputs from "./PasswordInputs";
 
 const SignupPage = ({ locations }) => {
 	const [isOwner, setIsOwner] = useState(false);
@@ -262,25 +263,11 @@ const SignupPage = ({ locations }) => {
 						))}
 					</select>
 				)}
-				<input
-					type="password"
-					name="password"
-					placeholder="Password"
-					className="w-full p-2 mb-4 border border-gray-300 rounded"
-					value={formData.password}
-					onChange={handleInputChange}
-					required
+				<PasswordInputs
+					handleInputChange={handleInputChange}
+					password={formData.password}
+					confirmPassword={formData.confirmPassword}
 				/>
-				<input
-					type="password"
-					name="confirmPassword" // New confirm password field
-					placeholder="Confirm Password"
-					className="w-full p-2 mb-4 border border-gray-300 rounded"
-					value={formData.confirmPassword}
-					onChange={handleInputChange}
-					required
-				/>
-
 				<p className="text-center text-[#ff0000]">{message}</p>
 				<button
 					type="submit"

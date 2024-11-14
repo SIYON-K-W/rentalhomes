@@ -7,6 +7,7 @@ import Footer from "@/Components/general/footer/Footer";
 import { HouseProvider } from "@/context/HouseContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Message from "@/Components/general/messagingapp/Message";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
@@ -43,6 +44,7 @@ export default function RootLayout({ children }) {
 						<HouseProvider>
 							<Navbar />
 							<div className="pt-[65px]">{children}</div>
+							<Message />
 							<Footer />
 						</HouseProvider>
 					</LocationProvider>

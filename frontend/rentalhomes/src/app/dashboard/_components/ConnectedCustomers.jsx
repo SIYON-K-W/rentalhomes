@@ -28,6 +28,7 @@ const ConnectedCustomers = () => {
 								headers: {
 									Authorization: `Bearer ${token.access}`,
 								},
+								cache: "no-store",
 							}
 						);
 

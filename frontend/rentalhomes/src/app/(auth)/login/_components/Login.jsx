@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { useAuth } from "@/context/Authcontext";
 import { useLocation } from "@/context/Locationcontext";
-
 import { toast } from "react-toastify";
 import Link from "next/link";
+import Passwordinput from "./Passwordinput";
 
 const Login = () => {
 	const [username, SetUsername] = useState("");
@@ -93,17 +93,9 @@ const Login = () => {
 									htmlFor="password">
 									Password
 								</label>
-								<input
-									type="password"
-									id="password"
-									name="password"
-									required
-									className="block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-									placeholder="Enter your password"
-									value={password}
-									onChange={(e) =>
-										SetPassword(e.target.value)
-									}
+								<Passwordinput
+									SetPassword={SetPassword}
+									password={password}
 								/>
 							</div>
 							<p className="text-center text-[#ff0000]">
