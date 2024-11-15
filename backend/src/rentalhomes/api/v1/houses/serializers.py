@@ -55,8 +55,6 @@ class HouseListingDetailSerializer(serializers.ModelSerializer):
 
 
 
-
-
 class HouseCreateSerializer(serializers.ModelSerializer):
     gallery_images = serializers.ListField(
         child=serializers.ImageField(),

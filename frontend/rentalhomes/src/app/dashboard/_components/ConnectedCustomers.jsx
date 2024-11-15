@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 const ConnectedCustomers = () => {
 	const [customers, setCustomers] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const { selectedHouseId, clearHouseId } = useHouseContext();
 
 	const hideOverlay = () => {
@@ -17,6 +18,7 @@ const ConnectedCustomers = () => {
 
 	useEffect(() => {
 		if (selectedHouseId) {
+			setLoading(true);
 			const tokenString = Cookies.get("token");
 			const fetchData = async () => {
 				try {
@@ -41,6 +43,8 @@ const ConnectedCustomers = () => {
 					}
 				} catch (error) {
 					console.log(error);
+				} finally {
+					setLoading(false);
 				}
 			};
 			fetchData();
@@ -64,7 +68,13 @@ const ConnectedCustomers = () => {
 						<h4 className="font-bold text-xl text-center mb-2">
 							Connected Customers
 						</h4>
-						{customers.length <= 0 ? (
+						{loading ? (
+							<div className="w-full h-full flex items-center justify-center text-center flex-1">
+								<p className="text-lg text-red-500 capitalize">
+									loading.....
+								</p>
+							</div>
+						) : customers.length <= 0 ? (
 							<div className="w-full h-full flex items-center justify-center text-center flex-1">
 								<p className="text-lg text-red-500">
 									no customers connected

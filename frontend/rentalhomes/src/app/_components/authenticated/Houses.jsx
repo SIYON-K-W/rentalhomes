@@ -18,6 +18,7 @@ const Houses = () => {
 		setError(null);
 		const tokenString = Cookies.get("token");
 		const fetchData = async () => {
+			setLoading(true);
 			try {
 				if (tokenString) {
 					const token = JSON.parse(tokenString);
@@ -94,7 +95,6 @@ const Houses = () => {
 											className="object-cover"
 										/>
 									</div>
-
 									<div className="p-4 flex items-start justify-between">
 										<div>
 											<h3 className="text-lg font-semibold capitalize">

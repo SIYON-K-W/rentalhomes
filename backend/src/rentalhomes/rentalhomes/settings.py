@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'phonenumber_field',
     'corsheaders',
+    'channels',
 
     'auth_user',
     'web',
@@ -131,6 +132,16 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=7),  
     'REFRESH_TOKEN_LIFETIME': timedelta(days=14),     
+}
+
+ASGI_APPLICATION = "rentalhomes.asgi.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
 
 
